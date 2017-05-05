@@ -30,10 +30,10 @@ class Piece:
     :param n is matrix's side length
     '''
 
-    def __init__(self, isLegal, matrix, n):
-        self.isLegal = isLegal
+    def __init__(self, matrix, n, is_legal = True):
+        self.is_legal = is_legal
         self.n = n
-        if isLegal:
+        if is_legal:
             self.matrix = matrix
             top_line = self.matrix[0]
             bottom_line = self.matrix[n - 1]
