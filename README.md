@@ -5,12 +5,11 @@ Piece
     Represents a single puzzle piece.
     Functions include: distance calculation
 
-DistanceMatrix
-    Receives a list of pieces and constructs a distance table
+DistanceAnalysis
+    Basic functions for distance calculation
 
-Organize
-    Receives a distance matrix and a corresponding list of pieces.
-    Organizes them using the Hungarian method.
+PictureAnalysis
+    Receives an image, creates a suitable matrix and creates a list of pieces.
 
 Main
     1) Read picture and transform it into a matrix

@@ -1,1 +1,9 @@
 INF = float('inf')
+LENGTH_CHECK_PRECENTAGE = 10
+
+# Side indexes
+TOP = 0
+LEFT = 1
+RIGHT = 2
+BOTTOM = 3
+INVERSE_CONST = 3

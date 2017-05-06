@@ -1,18 +1,4 @@
-
-# Indexes representing matrix's sides.
-TOP = 0
-LEFT = 1
-BOTTOM = 2
-RIGHT = 3
-
-
-def corresponding_side(side_index):
-    '''
-    :param side_index: an integer representing a matrix side
-    :return: index representing the other side of the matrix
-    '''
-    return (side_index + 2) % 4
-
+import DistanceAnalysis as Dist
 
 '''
 Piece class represents a single Puzzle piece
@@ -25,22 +11,19 @@ Attributes:
 
 
 class Piece:
-
-    def __init__(self, matrix, n, is_legal = True):
+    def __init__(self, matrix):
         '''
         Construct a legal Piece
         :param matrix is a square matrix representing the puzzle piece
         :param n is matrix's side length
          '''
-        self.is_legal = is_legal
-        self.n = n
-        if is_legal:
-            self.matrix = matrix
-            top_line = self.matrix[0]
-            bottom_line = self.matrix[n - 1]
-            left_col = [row[0] for row in matrix]
-            right_col = [row[n-1] for row in matrix]
-            self.borders = [top_line, left_col, bottom_line, right_col]
+        self.n = len(matrix)
+        self.matrix = matrix
+        top_line = self.matrix[0]
+        bottom_line = self.matrix[self.n - 1]
+        left_col = [row[0] for row in matrix]
+        right_col = [row[self.n - 1] for row in matrix]
+        self.borders = [top_line, left_col, right_col, bottom_line]
 
     def get_side(self, side_index):
         '''
@@ -55,11 +38,8 @@ class Piece:
         :param side_index: side index to be compared
         :return: distance between corresponding sides given
         '''
-        distance = 0
-        for i in range(self.n):
-           distance += (self.borders[side_index]-
-                        other.borders[corresponding_side(side_index)])**2
-        return distance
+        return Dist.get_distance(self.borders[side_index], other.borders[
+            Dist.corresponding_side(side_index)])
 
     def get_piece_distance_tuple(self, other):
         '''
@@ -67,5 +47,3 @@ class Piece:
         :return: a tuple containing all 4 distances
         '''
         return (self.get_piece_distance(other, index) for index in range(4))
-
-
