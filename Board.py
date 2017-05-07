@@ -52,7 +52,7 @@ class Board:
         '''
         for i in range(0, self.height, self.piece_height):
             for j in range(0, self.width, self.piece_width):
-                self.pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width]))
+                self.pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width].copy()))
 
     # Image handling
 
@@ -75,12 +75,11 @@ class Board:
         Get nparray with proposed solution
         :return: nparray of the solution
         '''
-        solved = np.empty((self.piece_height, self.piece_width, 2))#np.ones((self.height, self.width, 2))
+        solved = np.empty(self.img_arr.shape, self.img_arr.dtype)
         for k in range(self.m):
             for l in range(self.n):
-                #solved = np.concatenate((solved, self.board[k, l].matrix), axis=0)
-                solved[k * self.piece_height:(k + 1) * self.piece_height, l * self.piece_width : (l + 1) * self.piece_width, :] \
-                    = self.board[k, l].matrix[:, :, :]
+                solved[(k * self.piece_height):((k + 1) * self.piece_height), (l * self.piece_width):((l + 1) * self.piece_width), :] \
+                    = self.board[k, l].matrix
         return solved
 
     # Cells checking
