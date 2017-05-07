@@ -1,4 +1,7 @@
+from PIL import Image
 import DistanceAnalysis as Dist
+from Constants import *
+import HelpingFunction as HF
 
 '''
 Piece class represents a single Puzzle piece
@@ -17,12 +20,13 @@ class Piece:
         :param matrix is a square matrix representing the puzzle piece
         :param n is matrix's side length
          '''
-        self.n = len(matrix)
+        self.n = matrix.shape[0]
+        self.m = matrix.shape[1]
         self.matrix = matrix
-        top_line = self.matrix[0]
-        bottom_line = self.matrix[self.n - 1]
-        left_col = [row[0] for row in matrix]
-        right_col = [row[self.n - 1] for row in matrix]
+        top_line = self.matrix[0, :]
+        bottom_line = self.matrix[self.n - 1, :]
+        left_col = self.matrix[:, 0]
+        right_col = self.matrix[:, self.m - 1]
         self.borders = [top_line, left_col, right_col, bottom_line]
 
     def get_side(self, side_index):
@@ -47,3 +51,6 @@ class Piece:
         :return: a tuple containing all 4 distances
         '''
         return (self.get_piece_distance(other, index) for index in range(4))
+
+    def show(self):
+        HF.show_image(self.matrix)

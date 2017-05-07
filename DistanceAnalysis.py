@@ -13,7 +13,7 @@ from Constants import *
 def get_distance(border1, border2):
     n = len(border1)
     w = n * LENGTH_CHECK_PRECENTAGE
-    DT = np.zeros((n, n), float)
+    DT = np.zeros((n, n))
     for i in range(0, n):
         for j in range(0, n):
             if i - w + 1 <= j <= i + w - 1:

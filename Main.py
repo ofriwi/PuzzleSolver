@@ -1,8 +1,11 @@
 import Board
 import numpy as np
 import HelpingFunction as HF
+from Constants import *
 
-board = Board.Board(np.array([[1, None, None], [4, 5, 6], [None, 8, None]]))
+
+def create_square_puzzle(image_address, n):
+    return Board.Board(image_address, n, n)
 
 ########################################################################
 # Solver
@@ -25,3 +28,14 @@ def get_next_piece_to_match(cur_piece):
     for piece in empty_pieces_around:
         number_of_pieces_around_them.append(board.number_of_empty_pieces_around(piece))
     return empty_pieces_around[HF.index_of_minimum_nonzero(number_of_pieces_around_them)]
+
+board = create_square_puzzle(IMG_ADR, N)
+#for p in board.pieces:
+ #   p.show()
+#board.print_image()
+board.pieces[0].matrix
+board.board[0, 0] = board.pieces[0]
+board.board[0, 1] = board.pieces[1]
+board.board[1, 0] = board.pieces[2]
+board.board[1, 1] = board.pieces[3]
+board.print_solution()

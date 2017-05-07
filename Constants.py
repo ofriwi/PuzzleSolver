@@ -1,5 +1,13 @@
+# Game variables - Change the functionallity of the game, should be changed
+
+IMG_ADR = "pic.jpg"
+N = 2
+
+# System variables - Should not be changed after done developing
+
 INF = float('inf')
 LENGTH_CHECK_PRECENTAGE = 10
+GRAY = 'LA'
 
 # Side indexes
 TOP = 0  # (i-1,j)

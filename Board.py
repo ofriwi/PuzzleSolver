@@ -1,15 +1,88 @@
 import numpy as np
+from PIL import Image
+import Piece
+import math
+import HelpingFunction as HF
+from Constants import *
 
 
 class Board:
+    '''
+    img_arr - nparray
+    board - nparray of arranged pieces
+    pieces - list of pieces (Attention - not nparray)
+    height, width - in pixels
+    piece_height, piece_width - in pixels
+    n, m - width and height (in # of pieces)
+    '''
 
-    def __init__(self, board):
+    # Constructor
+
+    def __init__(self, image_address, n, m=0):
         '''
         Constructor
-        :param board: numpy arr[n*n] of Pieces - the board 
+        :param: board numpy arr[n*n] of Pieces - the board 
         :return: 
         '''
-        self.board = board
+        if m == 0:
+            m = n
+        # Initialize values
+        self.n = n
+        self.m = m
+        img = Image.open(image_address).convert(GRAY)
+        self.piece_height = int(math.ceil(img.size[1] / m))
+        self.piece_width = int(math.ceil(img.size[0] / n))
+        self.height = self.piece_height * m
+        self.width = self.piece_width * n
+        # Crop the image a little (so all pieces has the same size)
+        img = img.crop((0, 0, self.width, self.height))
+
+        # image to array
+        self.img_arr = np.array(img)
+
+        # Initialize board and pieces
+        self.board = np.empty((n, m), dtype=object)  # board
+        self.pieces = []
+        self.crop_image()
+
+    def crop_image(self):
+        '''
+        Crop the image and save the pieces in a list
+        :return: 
+        '''
+        for i in range(0, self.height, self.piece_height):
+            for j in range(0, self.width, self.piece_width):
+                self.pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width]))
+
+    # Image handling
+
+    def print_image(self):
+        '''
+        Print the original image
+        :return: 
+        '''
+        HF.show_image(self.img_arr)
+
+    def print_solution(self):
+        '''
+        Print the proposed solution to screen
+        :return: 
+        '''
+        HF.show_image(self.get_solution())
+
+    def get_solution(self):
+        '''
+        Get nparray with proposed solution
+        :return: nparray of the solution
+        '''
+        solved = np.empty((self.height, self.width, 2))
+        for k in range(self.m):
+            for l in range(self.n):
+                solved[k * self.piece_height : (k + 1) * self.piece_height, l * self.piece_width : (l + 1) * self.piece_width] \
+                    = self.board[k, l].matrix
+        return solved
+
+    # Cells checking
 
     def is_cell_exist(self, pos):
         '''
