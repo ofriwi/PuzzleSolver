@@ -33,7 +33,7 @@ board = create_square_puzzle(IMG_ADR, N)
 #for p in board.pieces:
  #   p.show()
 #board.print_image()
-board.pieces[0].matrix
+#board.pieces[0].show()
 board.board[0, 0] = board.pieces[0]
 board.board[0, 1] = board.pieces[1]
 board.board[1, 0] = board.pieces[2]

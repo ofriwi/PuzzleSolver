@@ -75,11 +75,12 @@ class Board:
         Get nparray with proposed solution
         :return: nparray of the solution
         '''
-        solved = np.empty((self.height, self.width, 2))
+        solved = np.empty((self.piece_height, self.piece_width, 2))#np.ones((self.height, self.width, 2))
         for k in range(self.m):
             for l in range(self.n):
-                solved[k * self.piece_height : (k + 1) * self.piece_height, l * self.piece_width : (l + 1) * self.piece_width] \
-                    = self.board[k, l].matrix
+                #solved = np.concatenate((solved, self.board[k, l].matrix), axis=0)
+                solved[k * self.piece_height:(k + 1) * self.piece_height, l * self.piece_width : (l + 1) * self.piece_width, :] \
+                    = self.board[k, l].matrix[:, :, :]
         return solved
 
     # Cells checking
@@ -94,8 +95,9 @@ class Board:
         '''
         i = pos[0]
         j = pos[1]
-        n = len(self.board)
-        if 0<=i<n and 0<=j<n:
+        n = self.board.shape[0]
+        m = self.board.shape[1]
+        if 0<=i<m and 0<=j<n:
             return 1
         return 0
 
