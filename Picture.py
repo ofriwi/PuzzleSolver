@@ -40,7 +40,7 @@ class Picture:
         self.piece_width = int(math.ceil(img.size[0] / n))
         self.height = self.piece_height * m
         self.width = self.piece_width * n
-        # Crop the image a little (so all pieces has the same size)
+        # Crop the image a little (so all pieces have the same size)
         img = img.crop((0, 0, self.width, self.height))
 
         # image to array

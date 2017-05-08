@@ -41,3 +41,9 @@ class Piece:
 
     def get_index(self):
         return self._index
+
+    def get_length(self):
+        '''
+        :return: piece side length 
+        '''
+        return len(self.borders[0])
