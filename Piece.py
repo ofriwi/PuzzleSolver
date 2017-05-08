@@ -1,4 +1,3 @@
-from PIL import Image
 import DistanceAnalysis as Dist
 from Constants import *
 import HelpingFunction as HF
@@ -14,7 +13,7 @@ Attributes:
 
 
 class Piece:
-    def __init__(self, matrix):
+    def __init__(self, matrix, index):
         '''
         Construct a legal Piece
         :param matrix is a square matrix representing the puzzle piece
@@ -23,6 +22,7 @@ class Piece:
         self.n = matrix.shape[0]
         self.m = matrix.shape[1]
         self.matrix = matrix
+        self._index = index
         top_line = self.matrix[0, :]
         bottom_line = self.matrix[self.n - 1, :]
         left_col = self.matrix[:, 0]
@@ -36,21 +36,8 @@ class Piece:
         '''
         return self.borders[side_index]
 
-    def get_piece_distance(self, other, side_index):
-        '''
-        :param other: another piece
-        :param side_index: side index to be compared
-        :return: distance between corresponding sides given
-        '''
-        return Dist.get_distance(self.borders[side_index], other.borders[
-            Dist.corresponding_side(side_index)])
-
-    def get_piece_distance_tuple(self, other):
-        '''
-        :param other: another piece
-        :return: a tuple containing all 4 distances
-        '''
-        return (self.get_piece_distance(other, index) for index in range(4))
-
     def show(self):
         HF.show_image(self.matrix)
+
+    def get_index(self):
+        return self._index

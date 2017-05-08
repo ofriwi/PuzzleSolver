@@ -22,3 +22,7 @@ def index_of_maximum_not_inf(arr):
 
 def show_image(img_arr):
     Image.fromarray(img_arr, GRAY).show()
+
+
+def tuple_list_to_2d(lst):
+    return [list(item) for item in lst]
