@@ -57,7 +57,7 @@ class Board:
         Get nparray with proposed solution
         :return: nparray of the solution
         '''
-        solved = np.empty(self.img_arr.shape, self.img_arr.dtype)
+        solved = np.empty(self.picture.img_arr.shape, self.picture.img_arr.dtype)
         for k in range(self.m):
             for l in range(self.n):
                 solved[(k * self.piece_height):((k + 1) * self.piece_height), (l * self.piece_width):((l + 1) * self.piece_width), :] \
@@ -91,6 +91,32 @@ class Board:
             return NO_PIECE
         else:
             return self.board[pos]
+
+    def add_piece_in_position(self, pos, piece):
+        '''
+        Add a piece in certain position
+        :param pos: position
+        :param piece: piece object
+        :return: 
+        '''
+        self.board[pos[0], pos[1]] = piece
+
+    def add_piece_in_direction(self, pos, piece, direction):
+        '''
+        Add a piece in certain direction according to a position
+        :param pos: position
+        :param piece: the piece to add
+        :param direction: TOP, RIGHT, LEFT or BOTTOM
+        :return: 
+        '''
+        if direction == TOP:
+            self.add_piece_in_position((pos[0] - 1, pos[1]), piece)
+        if direction == LEFT:
+            self.add_piece_in_position((pos[0], pos[1] - 1), piece)
+        if direction == RIGHT:
+            self.add_piece_in_position((pos[0], pos[1] + 1), piece)
+        if direction == BOTTOM:
+            self.add_piece_in_position((pos[0] + 1, pos[1]), piece)
 
     # Cells checking
 
@@ -178,3 +204,22 @@ class Board:
             if self.is_cell_exist(cell):
                 indexes.append(cell)
         return indexes
+
+    def get_empty_directions_around(self, pos):
+        '''
+        Get the direction of empty pieces around as a list
+        :param pos: piece's position
+        :return: list of empty directions (i.e. [RIGHT, BOTTOM] for upper left corner)
+        '''
+        result = []
+        i = pos[0]
+        j = pos[1]
+        if self.is_cell_empty((i - 1, j)):
+            result.append(TOP)
+        if self.is_cell_empty((i, j - 1)):
+            result.append(LEFT)
+        if self.is_cell_empty((i, j + 1)):
+            result.append(RIGHT)
+        if self.is_cell_empty((i + 1, j)):
+            result.append(BOTTOM)
+        return result

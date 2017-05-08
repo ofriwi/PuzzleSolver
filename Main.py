@@ -16,7 +16,7 @@ def single_pic_sol(image_address, max_n):
     '''
     result_file = open(address_to_name(image_address), "w")
     for n in range(3, max_n):
-        single_run(image_address, n, result_file
+        single_run(image_address, n, result_file)
 
 
 def single_run(image_address, n, result_file):
@@ -49,7 +49,7 @@ def create_square_puzzle(image_address, n):
 
 picture = create_square_puzzle(IMG_ADR, N)
 solver = Solver.Solver(picture)
-print(solver.get_hungarian(0))
+#print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 
 # Dist.get_distance_between_borders(board.pieces[0], board.pieces[1], 0)
 # print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[2].get_side(LEFT)))
@@ -68,4 +68,4 @@ print(solver.get_hungarian(0))
 # board.board[1, 1] = board.pieces[0]
 # board.print_solution()
 # board.get_solution()
-print()
+

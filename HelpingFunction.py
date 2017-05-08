@@ -1,6 +1,6 @@
 from PIL import Image
-import numpy as *
-import scipy.misc *
+import numpy as np
+#import scipy.misc
 
 from Constants import *
 import numpy as np
@@ -37,7 +37,7 @@ def matrix_to_picture(piece_matrix, picture_name):
     '''
     piece_length = piece_matrix[0][0].get_length()
     n = piece_length * len(piece_matrix)
-    picture_matrix = zeros(n, n)
+    picture_matrix = np.zeros((n, n))
     for i in range(n):
         for j in range(n):
             piece = piece_matrix[i // piece_length][j // piece_length]
