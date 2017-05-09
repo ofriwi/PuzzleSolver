@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-#import scipy.misc
+# import scipy.misc
 
 from Constants import *
 import numpy as np
@@ -11,7 +11,7 @@ def index_of_minimum(arr):
 
 
 def index_of_minimum_nonzero(arr):
-    return arr.index(min(x for x in arr if x>0))
+    return arr.index(min(x for x in arr if x > 0))
 
 
 def index_of_maximum(arr):
@@ -19,7 +19,7 @@ def index_of_maximum(arr):
 
 
 def index_of_maximum_not_inf(arr):
-    return arr.index(max(x for x in arr if x<INF))
+    return arr.index(max(x for x in arr if x < INF))
 
 
 def show_image(img_arr):
@@ -44,3 +44,18 @@ def matrix_to_picture(piece_matrix, picture_name):
             picture_matrix[i][j] = piece[i % piece_length][j % piece_length]
     image = Image.fromArray(picture_matrix)
     image.save(picture_name)
+
+
+def best_k_values(dict, k):
+    '''
+    :param dict: a dictionary 
+    :param k: an integer k
+    :return: a list of the smallest k keys in the dictionary
+    '''
+    key_lst = [key for key in dict.keys()]
+    min_lst = []
+    for i in range(min(k, len(key_lst))):
+        minimal = min(key_lst)
+        min_lst.append(minimal)
+        key_lst.remove(minimal)
+    return min_lst

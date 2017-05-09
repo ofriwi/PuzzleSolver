@@ -2,9 +2,10 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "etsi.jpg"
-N = 10
+IMG_ADR = "face.jpg"
+N = 3
 LENGTH_CHECK_PRECENTAGE = 10
+MATCH_NUM = 10
 
 # System variables - Should not be changed after done developing
 

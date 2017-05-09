@@ -1,6 +1,7 @@
 import Board
 import HelpingFunction as HF
 import hungarian as Hungarian
+import Constants as const
 
 
 class Solver:
@@ -24,15 +25,17 @@ class Solver:
         if self.board.n > 2 and self.board.m > 2:
             STARTING = 1
         else:
-            STARTING = 0 #TODO: change
+            STARTING = 0  # TODO: change
         for k in range(STARTING, self.board.n - STARTING):
             for l in range(STARTING, self.board.m - STARTING):
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
                     self.matches[cost] = board
         min_cost = min(self.matches.keys())
-        self.matches[min_cost].show_solution()
-
+        best_matches = HF.best_k_values(self.matches, const.MATCH_NUM)
+        for key in best_matches:
+            self.matches[key].show_solution()
+            # self.matches[min_cost].show_solution()
 
     def single_solution(self, pos, piece_index):
         '''
@@ -53,9 +56,9 @@ class Solver:
 
         # TODO : save cost
 
-        #self.board.show_solution()
-        #input()
-        return self.current_cost, self.board # TODO: better
+        # self.board.show_solution()
+        # input()
+        return self.current_cost, self.board  # TODO: better
 
     def build_around(self, pos):
         '''
@@ -79,7 +82,7 @@ class Solver:
             next_pos = self.get_next_position_to_match(pos)
             while next_pos is not None:
                 self.build_around(next_pos)
-                next_pos = self.get_next_position_to_match(pos) # TODO check if better solution
+                next_pos = self.get_next_position_to_match(pos)  # TODO check if better solution
 
     # Lines 8-9
     def get_hungarian(self, piece_index, valid_directions):
@@ -100,7 +103,8 @@ class Solver:
         hungarian = Hungarian.Hungarian(H)
         hungarian.calculate()
         # Get the correct indexes of unassigned cells and vald directions
-        result =[(self.board.get_unassigned_cells()[index], valid_directions[direction]) for (index, direction) in hungarian.get_results()]
+        result = [(self.board.get_unassigned_cells()[index], valid_directions[direction]) for (index, direction) in
+                  hungarian.get_results()]
         cost = hungarian.get_total_potential()
         return result, cost
 

@@ -34,8 +34,8 @@ class Picture:
         self.m = m
         self.name = image_address.split('.jpg')[0]
         img = Image.open(image_address).convert(GRAY)
-        self.piece_height = int(math.ceil(img.size[1] / m))
-        self.piece_width = int(math.ceil(img.size[0] / n))
+        self.piece_height = int(math.floor(img.size[1] / m))
+        self.piece_width = int(math.floor(img.size[0] / n))
         self.height = self.piece_height * m
         self.width = self.piece_width * n
         # Crop the image a little (so all pieces have the same size)
@@ -55,7 +55,7 @@ class Picture:
         pieces = []
         for i in range(0, self.height, self.piece_height):
             for j in range(0, self.width, self.piece_width):
-                pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width].copy()))
+                pieces.append(Piece.Piece(self.img_arr[i:i + self.piece_height, j:j + self.piece_width].copy()))
         return pieces
 
     # Image handling
