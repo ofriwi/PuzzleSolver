@@ -6,6 +6,7 @@ IMG_ADR = "face.jpg"
 N = 3
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 10
+SUBFOLDER = "picture_data/"
 
 # System variables - Should not be changed after done developing
 

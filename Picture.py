@@ -29,6 +29,7 @@ class Picture:
         '''
         if m == 0:
             m = n
+        image_address = SUBFOLDER + image_address
         # Initialize values
         self.n = n
         self.m = m
