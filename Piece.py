@@ -13,7 +13,7 @@ Attributes:
 
 
 class Piece:
-    def __init__(self, matrix, index):
+    def __init__(self, matrix):
         '''
         Construct a legal Piece
         :param matrix is a square matrix representing the puzzle piece
@@ -22,7 +22,6 @@ class Piece:
         self.n = matrix.shape[0]
         self.m = matrix.shape[1]
         self.matrix = matrix
-        self._index = index
         top_line = self.matrix[0, :]
         bottom_line = self.matrix[self.n - 1, :]
         left_col = self.matrix[:, 0]
@@ -38,9 +37,6 @@ class Piece:
 
     def show(self):
         HF.show_image(self.matrix)
-
-    def get_index(self):
-        return self._index
 
     def get_length(self):
         '''

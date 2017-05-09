@@ -1,11 +1,10 @@
 import numpy as np
 from PIL import Image
-import Piece
-import math
-import HelpingFunction as HF
-from Constants import *
+
 import DistanceAnalysis as Dist
-import Solver
+import HelpingFunction as HF
+import Piece
+from Constants import *
 
 
 class Board:

@@ -1,12 +1,10 @@
-import Board
-import numpy as np
-import HelpingFunction as HF
-import Solver
-from Constants import *
-import DistanceAnalysis as Dist
-import Picture
 import os
 import time
+
+import Board
+import Picture
+from Solver import Solver
+from Constants import *
 
 
 def single_pic_sol(image_address, max_n):
@@ -43,12 +41,15 @@ def address_to_name(address):
     return (os.path.splitext(address)[0])
 
 
-def create_square_puzzle(image_address, n):
-    return Picture.Picture(image_address, n, n)
+def create_square_puzzle(image_address, n, m=0):
+    return Picture.Picture(image_address, n, m)
 
 
 picture = create_square_puzzle(IMG_ADR, N)
-solver = Solver.Solver(picture)
+#picture.show_image()
+s = Solver(picture)
+# s.single_solution((0,0), 1)
+#solver = Solver.Solver(picture)
 #print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 
 # Dist.get_distance_between_borders(board.pieces[0], board.pieces[1], 0)

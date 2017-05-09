@@ -1,11 +1,9 @@
 import numpy as np
 from PIL import Image
-import Piece
-import math
+
 import HelpingFunction as HF
+import Piece
 from Constants import *
-import DistanceAnalysis as Dist
-import Solver
 
 
 class Picture:
@@ -57,7 +55,7 @@ class Picture:
         pieces = []
         for i in range(0, self.height, self.piece_height):
             for j in range(0, self.width, self.piece_width):
-                pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width].copy(), i*self.width + j))
+                pieces.append(Piece.Piece(self.img_arr[i:i+self.piece_height, j:j+self.piece_width].copy()))
         return pieces
 
     # Image handling

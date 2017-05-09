@@ -10,11 +10,11 @@ def get_distance_matrix(piece_list, name=''):
     :return: an lXl matrix of tuples represnting piece distances, where l is piece_list's length
     '''
     # TODO load
-    file_name = name + '.npy'
+    l = len(piece_list)
+    file_name = name + str(l) + '.npy'
     if os.path.isfile(file_name):
         distance_matrix = load_from_file(file_name)
     else:
-        l = len(piece_list)
         distance_matrix = np.zeros((l, l), tuple)
         for i in range(l):
             for j in range(l):

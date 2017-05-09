@@ -2,13 +2,13 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "pic.jpg"
-N = 2
+IMG_ADR = "etsi.jpg"
+N = 10
 LENGTH_CHECK_PRECENTAGE = 10
 
 # System variables - Should not be changed after done developing
 
-INF = 2147483647 #float('inf') - 1
+INF = 2147483647  # float('inf') - 1
 GRAY = 'LA'
 PIXEL_DIMENTION = 2
 

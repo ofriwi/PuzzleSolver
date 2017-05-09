@@ -11,7 +11,7 @@ def index_of_minimum(arr):
 
 
 def index_of_minimum_nonzero(arr):
-    return arr.index(min(arr) > 0)
+    return arr.index(min(x for x in arr if x>0))
 
 
 def index_of_maximum(arr):
@@ -19,7 +19,7 @@ def index_of_maximum(arr):
 
 
 def index_of_maximum_not_inf(arr):
-    return arr.index(max(arr) < INF)
+    return arr.index(max(x for x in arr if x<INF))
 
 
 def show_image(img_arr):
@@ -27,7 +27,7 @@ def show_image(img_arr):
 
 
 def tuple_list_to_2d(lst):
-    return [list(item) for item in lst]
+    return np.array([list(item) for item in lst])
 
 
 def matrix_to_picture(piece_matrix, picture_name):
