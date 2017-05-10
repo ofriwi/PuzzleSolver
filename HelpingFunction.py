@@ -59,3 +59,11 @@ def best_k_values(dict, k):
         min_lst.append(minimal)
         key_lst.remove(minimal)
     return min_lst
+
+
+def address_to_name(address):
+    '''
+    :param address: a file address 
+    :return: file name
+    '''
+    return (os.path.splitext(address)[0])

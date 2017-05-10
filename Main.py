@@ -1,10 +1,12 @@
+import Board
+import numpy as np
+import HelpingFunction as HF
+import Solver
+from Constants import *
+import DistanceAnalysis as Dist
+import Picture
 import os
 import time
-
-import Board
-import Picture
-from Solver import Solver
-from Constants import *
 
 
 def single_pic_sol(image_address, max_n):
@@ -12,7 +14,7 @@ def single_pic_sol(image_address, max_n):
     :param image_address: adress of desired image 
     :param max_n: max_n^2 is the maximal number of puzzle pieces to be cut
     '''
-    result_file = open(address_to_name(image_address), "w")
+    result_file = open(SUBFOLDER + HF.address_to_name(image_address), "w")
     for n in range(3, max_n):
         single_run(image_address, n, result_file)
 
@@ -23,34 +25,25 @@ def single_run(image_address, n, result_file):
     :param n: n^2 is the number of puzzle pieces to be cut
     '''
     square_puzzle = Picture.Picture(image_address, n, n)
-    picture_name = address_to_name((image_address))
+    picture_name = HF.address_to_name((image_address))
     solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces")
     time_before = time.time()
-    # piece_matrix = solve_puzzle(square_puzzle)
+    puzzle_solver = Solver(square_puzzle)
+    piece_board = puzzle_solver.solve()
+    piece_matrix = piece_board.get_solution_array()
     running_time = time.time - time_before()
-    # HF.matrix_to_picture(piece_matrix,solution_name)
+    HF.matrix_to_picture(piece_matrix, solution_name)
     result_file.write(
         "%X% pieces: % [sec]\n" % str(n) % str(n) % str(running_time))
 
 
-def address_to_name(address):
-    '''
-    :param address: a file address 
-    :return: file name
-    '''
-    return (os.path.splitext(address)[0])
-
-
-def create_square_puzzle(image_address, n, m=0):
-    return Picture.Picture(image_address, n, m)
+def create_square_puzzle(image_address, n):
+    return Picture.Picture(image_address, n, n)
 
 
 picture = create_square_puzzle(IMG_ADR, N)
-#picture.show_image()
-s = Solver(picture)
-# s.single_solution((0,0), 1)
-#solver = Solver.Solver(picture)
-#print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
+solver = Solver.Solver(picture)
+# print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 
 # Dist.get_distance_between_borders(board.pieces[0], board.pieces[1], 0)
 # print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[2].get_side(LEFT)))
@@ -69,4 +62,3 @@ s = Solver(picture)
 # board.board[1, 1] = board.pieces[0]
 # board.print_solution()
 # board.get_solution()
-

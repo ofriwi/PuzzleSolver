@@ -7,7 +7,7 @@ import Piece
 from Constants import *
 
 
-class Board:
+class Board1:
     '''
     img_arr - nparray
     board - nparray of arranged pieces

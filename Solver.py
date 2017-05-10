@@ -32,10 +32,11 @@ class Solver:
                     (cost, board) = self.single_solution((k, l), index)
                     self.matches[cost] = board
         min_cost = min(self.matches.keys())
-        best_matches = HF.best_k_values(self.matches, const.MATCH_NUM)
-        for key in best_matches:
-            self.matches[key].show_solution()
-            # self.matches[min_cost].show_solution()
+        return self.matches[min_cost]
+        # best_matches = HF.best_k_values(self.matches, const.MATCH_NUM)
+        # for key in best_matches:
+        #   self.matches[key].show_solution()
+        #   print(key)
 
     def single_solution(self, pos, piece_index):
         '''
@@ -76,13 +77,15 @@ class Solver:
 
         # Lines 10 - 11
         for (piece_index, direction) in assign:
-            self.board.add_piece_index_in_direction(pos, piece_index, direction)
+            self.board.add_piece_index_in_direction(pos, piece_index,
+                                                    direction)
 
         if not self.board.is_puzzle_completed():
             next_pos = self.get_next_position_to_match(pos)
             while next_pos is not None:
                 self.build_around(next_pos)
-                next_pos = self.get_next_position_to_match(pos)  # TODO check if better solution
+                next_pos = self.get_next_position_to_match(
+                    pos)  # TODO check if better solution
 
     # Lines 8-9
     def get_hungarian(self, piece_index, valid_directions):
@@ -94,7 +97,8 @@ class Solver:
             and the direction is the direction relative to the piece
         '''
         # Get i * unassigned
-        row_distance_matrix = self.board.get_distance_matrix()[piece_index, self.board.get_unassigned_cells()]
+        row_distance_matrix = self.board.get_distance_matrix()[
+            piece_index, self.board.get_unassigned_cells()]
         # Convert to 2d array
         H = HF.tuple_list_to_2d(row_distance_matrix)
         # Take only valid directions
@@ -103,7 +107,8 @@ class Solver:
         hungarian = Hungarian.Hungarian(H)
         hungarian.calculate()
         # Get the correct indexes of unassigned cells and vald directions
-        result = [(self.board.get_unassigned_cells()[index], valid_directions[direction]) for (index, direction) in
+        result = [(self.board.get_unassigned_cells()[index],
+                   valid_directions[direction]) for (index, direction) in
                   hungarian.get_results()]
         cost = hungarian.get_total_potential()
         return result, cost
@@ -122,7 +127,8 @@ class Solver:
         # Find the piece with maximum empty pieces around
         number_of_pieces_around_them = []
         for piece in pieces_around:
-            number_of_pieces_around_them.append(self.board.number_of_empty_pieces_around(piece))
+            number_of_pieces_around_them.append(
+                self.board.number_of_empty_pieces_around(piece))
         if max(number_of_pieces_around_them) == 0:
             return None
         return pieces_around[HF.index_of_maximum(number_of_pieces_around_them)]
