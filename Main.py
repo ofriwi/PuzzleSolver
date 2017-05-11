@@ -51,7 +51,7 @@ def create_square_puzzle(image_address, n):
 
 
 picture = create_square_puzzle(IMG_ADR, N)
-solver = Solver.Solver(picture)
+solver = Solver.Solver(picture, INTUITIVE)
 
 #for i in range(4, 10, 2):
  #   picture = create_square_puzzle(IMG_ADR, i)

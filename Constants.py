@@ -2,10 +2,10 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "pic.jpg"
-N = 4
+IMG_ADR = "lily.jpg"
+N = 3
 LENGTH_CHECK_PRECENTAGE = 10
-MATCH_NUM = 5#10
+MATCH_NUM = 3#10
 SUBFOLDER = "picture_data/"
 
 DEBUG = False#True
@@ -30,4 +30,5 @@ ALL_DIRECTIONS = [TOP, LEFT, RIGHT, BOTTOM]
 BETTER = 0
 OLD_HUNGARIAN = 1
 BRUTE_FORCE = 2
-GREEDY = 3
+INTUITIVE = 3
+ALGO_NAME = ['BETTER', 'old hungarian', 'brute force', 'intuitive']

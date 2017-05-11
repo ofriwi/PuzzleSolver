@@ -4,6 +4,7 @@ import hungarian as Hungarian
 import Constants as const
 import numpy as np
 from Constants import *
+import itertools
 
 
 class Solver:
@@ -14,16 +15,72 @@ class Solver:
     '''
 
     # Constructor
-    def __init__(self, picture):
+    def __init__(self, picture, solver_type):
         self._picture = picture
         self.board = Board.Board(picture)
         self.current_cost = 0
+        self.solver_type = solver_type
         if not STEP_BY_STEP_DEBUG:
-            self.solve()
+            self.results = self.solve()
 
     # Solver
 
     def solve(self):
+        if self.solver_type == BETTER or self.solver_type == OLD_HUNGARIAN:
+            result = self.our_algorithm()
+        elif self.solver_type == BRUTE_FORCE:
+            result = self.brute_force_algorithm()
+        elif self.solver_type == INTUITIVE:
+            result = self.intuitive_algorithm()
+        return result
+
+    def brute_force_algorithm(self):
+        matches = {}
+        permutations = itertools.permutations(range(len(self._picture.pieces)))
+        for indexes in permutations:
+            self.board = Board.Board(self._picture)
+            indexes = list(indexes)
+            for k in range(self.board.n):
+                for l in range(self.board.m):
+                    self.board.add_piece_index_in_position((k, l), indexes[0])
+                    indexes.pop(0)
+            matches[self.board.get_total_cost()] = self.board
+        self.get_best_matches(matches, MATCH_NUM)
+        return 0
+
+    def intuitive_algorithm(self):
+        matches = {}
+        for index in range(len(self._picture.pieces)):
+            self.board = Board.Board(self._picture)
+            cost = 0
+            for k in range(self.board.n):
+                for l in range(self.board.m):
+                    if k == 0 and l == 0:
+                        self.board.add_piece_index_in_position((k, l), index)
+                    elif k != self.board.n - 1:
+                        D = self.board.get_distance_matrix()
+                        #hungarian = Hungarian.Hungarian(D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM])
+                        #hungarian.calculate()
+                        #assign, cost = hungarian.get_results()
+                        cost += min(D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM])
+                        match_index = D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM]
+                        self.board.add_piece_index_in_position((k, l), match_index)
+                    else:
+                        D = self.board.get_distance_matrix()
+                        match_index = min(D[self.board.get_piece_index_in_direction((k, l), LEFT), self.board.get_unassigned_cells(), RIGHT])
+                        cost += D[match_index]
+                        self.board.add_piece_index_in_position((k, l), match_index)
+            matches[cost] = self.board
+        self.get_best_matches(matches, MATCH_NUM)
+        return 0
+
+
+    def our_algorithm(self):
+        '''
+        Run our algorithm
+        :param solver_type: 
+        :return: 
+        '''
         matches = {}
         if self.board.n > 2 and self.board.m > 2:
             starting = 1
@@ -34,19 +91,24 @@ class Solver:
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
                     matches[cost] = board
-                if DEBUG:
-                    print(str(l) + " checks out of " + str(self.board.m - starting))
+                print(str(l) + " checks out of " + str(self.board.m - 2*starting))
+            print(str(k) + " large iter out of " + str(self.board.n - 2*starting))
+        self.get_best_matches(matches, MATCH_NUM)
+        return 0
+
+    def get_best_matches(self, matches, number_of_values):
+        '''
+        Get n best values in matches dictonery
+        :param matches: 
+        :param number_of_values: 
+        :return: best values as (cost, board)
+        '''
+        best_matches = HF.best_k_values(matches, number_of_values)
+        for key in best_matches:
+            matches[key].show_solution()
             if DEBUG:
-                print(str(k) + " large iter out of " + str(self.board.n - starting))
-        if DEBUG:
-            best_matches = HF.best_k_values(matches, const.MATCH_NUM)
-            for key in best_matches:
-              matches[key].show_solution()
-              print(key)
-        else:
-            min_cost = min(matches.keys())
-            matches[min_cost].show_solution()
-        return
+                print(key)
+        return best_matches
 
     def single_solution(self, pos, piece_index):
         '''
@@ -80,8 +142,11 @@ class Solver:
 
         # Lines 8 - 9
         empty_directions = self.board.get_empty_directions_around(pos)
-        assign, cost = self.better_hungarian(piece_index, empty_directions,
+        if self.solver_type == BETTER:
+            assign, cost = self.better_hungarian(piece_index, empty_directions,
                                              pos)
+        else:
+            assign, cost = self.get_hungarian(piece_index, empty_directions)
         self.current_cost += cost
 
         # Lines 10 - 11
@@ -121,34 +186,6 @@ class Solver:
         hungarian = Hungarian.Hungarian(H)
         hungarian.calculate()
         # Get the correct indexes of unassigned cells and vald directions
-        result = [(self.board.get_unassigned_cells()[index],
-                   valid_directions[direction]) for (index, direction) in
-                  hungarian.get_results()]
-        cost = hungarian.get_total_potential()
-        return result, cost
-
-    def debug_hungarian(self, piece_index, valid_directions):
-        '''
-        Get the hungarian arrangement around a piece
-        :param piece_index: the piece's index
-        :param valid_directions: direction with empty cells as list [T, R, L, B]
-        :return: list of tuples (index, direction) where index is the index of the matching piece 
-            and the direction is the direction relative to the piece
-        '''
-        # Get i * unassigned
-        D = self.board.get_distance_matrix()
-        row_distance_matrix = D[piece_index, :, :][
-                              self.board.get_unassigned_cells(), :][:,
-                              valid_directions]
-        # print(row_distance_matrix)
-        # Convert to 2d array
-        H = row_distance_matrix  # .reshape(row_distance_matrix.shape[1], row_distance_matrix.shape[2])
-        # Take only valid directions
-        # H = H[:, valid_directions]
-        # Calculate hungarian
-        hungarian = Hungarian.Hungarian(H)
-        hungarian.calculate()
-        # Get the correct indexes of unassigned cells and valid directions
         result = [(self.board.get_unassigned_cells()[index],
                    valid_directions[direction]) for (index, direction) in
                   hungarian.get_results()]

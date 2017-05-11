@@ -55,7 +55,7 @@ class Board:
 
     def show_solution_print_cost(self):
         self.show_solution()
-        self.total_cost()
+        self.get_total_cost()
 
     def get_solution_array(self):
         """
@@ -84,7 +84,7 @@ class Board:
         """
         return self.picture.distance_matrix
 
-    def total_cost(self):
+    def get_total_cost(self):
         total_cost = 0
         for i in range(self.n):
             for j in range(self.m):
@@ -98,6 +98,7 @@ class Board:
         if DEBUG:
             print('sol_cost = ' + str(total_cost))
         return total_cost
+
     # Pieces
 
     def get_piece_index_in_position(self, pos):
@@ -107,6 +108,14 @@ class Board:
         :return: piece index in pos
         """
         return self._board_indexes[pos]
+
+    def get_piece_index_in_direction(self, pos, direction):
+        """
+        Get a piece object in a location
+        :param pos: position tuple
+        :return: piece index in pos
+        """
+        return self.get_piece_index_in_position(self.get_position_in_direction(pos, direction))
 
     def get_piece_obj_in_position(self, pos):
         """
