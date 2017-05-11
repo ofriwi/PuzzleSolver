@@ -62,6 +62,21 @@ class Picture:
                                           j:j + self.piece_width].copy()))
         return pieces
 
+    def picture_cost(self):
+        total_cost = 0
+        for i in range(self.n):
+            for j in range(self.m):
+                index = i * self.n + j
+                if not j == self.m - 1:
+                    total_cost += Dist.get_border_distance(self.pieces[index].get_side(
+                        RIGHT), self.pieces[index + 1].get_side(
+                        LEFT))
+                if not i == self.n - 1:
+                    total_cost += Dist.get_border_distance(self.pieces[index].get_side(
+                        BOTTOM), self.pieces[index + 1].get_side(TOP))
+        if DEBUG:
+            print('pic_cost = ' + str(total_cost))
+        return total_cost
     # Image handling
 
     def show_image(self):

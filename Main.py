@@ -50,10 +50,12 @@ def create_square_puzzle(image_address, n):
 
 picture = create_square_puzzle(IMG_ADR, 4)
 solver = Solver.Solver(picture)
-picture = create_square_puzzle(IMG_ADR, 5)
-solver = Solver.Solver(picture)
-picture = create_square_puzzle(IMG_ADR, 6)
-solver = Solver.Solver(picture)
+solver.single_solution((1, 1), 5)
+picture.picture_cost()
+#picture = create_square_puzzle(IMG_ADR, 5)
+#solver = Solver.Solver(picture)
+#picture = create_square_puzzle(IMG_ADR, 6)
+#solver = Solver.Solver(picture)
 
 # print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 

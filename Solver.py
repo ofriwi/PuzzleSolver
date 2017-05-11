@@ -18,7 +18,8 @@ class Solver:
         self._picture = picture
         self.board = Board.Board(picture)
         self.current_cost = 0
-        self.solve()
+        if not STEP_BY_STEP_DEBUG:
+            self.solve()
 
     # Solver
 
@@ -35,10 +36,11 @@ class Solver:
                     matches[cost] = board
         min_cost = min(matches.keys())
         matches[min_cost].show_solution()
-        # best_matches = HF.best_k_values(self.matches, const.MATCH_NUM)
-        # for key in best_matches:
-        #   self.matches[key].show_solution()
-        #   print(key)
+        if DEBUG:
+            best_matches = HF.best_k_values(matches, const.MATCH_NUM)
+            for key in best_matches:
+              matches[key].show_solution()
+              print(key)
 
     def single_solution(self, pos, piece_index):
         '''
@@ -73,6 +75,8 @@ class Solver:
         # Lines 8 - 9
         empty_directions = self.board.get_empty_directions_around(pos)
         #        assign, cost = self.get_hungarian(piece_index, empty_directions)
+        assign_reg, cost_reg = self.get_hungarian(piece_index, empty_directions) #
+        # TODO debug
         assign, cost = self.better_hungarian(piece_index, empty_directions,
                                              pos)
 
@@ -82,6 +86,9 @@ class Solver:
         for (piece_index, direction) in assign:
             self.board.add_piece_index_in_direction(pos, piece_index,
                                                     direction)
+
+        if STEP_BY_STEP_DEBUG:
+            self.board.show_solution()
 
         if not self.board.is_puzzle_completed():
             next_pos = self.get_next_position_to_match(pos)
@@ -193,7 +200,7 @@ class Solver:
                 other_piece = self.board.get_piece_index_in_position(
                     other_piece_pos)
                 row_around = D[
-                    other_piece, self.board.get_unassigned_cells(), INVERSE - direction]
+                    other_piece, self.board.get_unassigned_cells(), INVERSE-direction]
                 avg += row_around
                 counter += 1
         avg = avg / counter

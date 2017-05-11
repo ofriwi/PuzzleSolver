@@ -5,8 +5,11 @@ import math
 IMG_ADR = "etsi.jpg"
 N = 4
 LENGTH_CHECK_PRECENTAGE = 10
-MATCH_NUM = 10
+MATCH_NUM = 5#10
 SUBFOLDER = "picture_data/"
+
+DEBUG = True
+STEP_BY_STEP_DEBUG = True
 
 # System variables - Should not be changed after done developing
 

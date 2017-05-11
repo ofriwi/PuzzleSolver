@@ -53,6 +53,10 @@ class Board:
         """
         HF.show_image(self.get_solution_array())
 
+    def show_solution_print_cost(self):
+        self.show_solution()
+        self.total_cost()
+
     def get_solution_array(self):
         """
         Get nparray with proposed solution
@@ -61,9 +65,14 @@ class Board:
         solved = np.empty(self.picture.img_arr.shape, self.picture.img_arr.dtype)
         for k in range(self.m):
             for l in range(self.n):
-                solved[(k * self.piece_height):((k + 1) * self.piece_height)
-                , (l * self.piece_width):((l + 1) * self.piece_width), :] \
-                    = self._board[k, l].matrix
+                if self._board_indexes[k, l] == -1:
+                    solved[(k * self.piece_height):((k + 1) * self.piece_height)
+                        , (l * self.piece_width):((l + 1) * self.piece_width), :] = np.zeros((
+                        self.piece_height, self.piece_width, 2))
+                else:
+                    solved[(k * self.piece_height):((k + 1) * self.piece_height)
+                        , (l * self.piece_width):((l + 1) * self.piece_width), :] \
+                        = self._board[k, l].matrix
         return solved
 
     # Distances
@@ -75,6 +84,20 @@ class Board:
         """
         return self.picture.distance_matrix
 
+    def total_cost(self):
+        total_cost = 0
+        for i in range(self.n):
+            for j in range(self.m):
+                if not j == self.m - 1:
+                    total_cost += Dist.get_border_distance(self._board[i, j].get_side(
+                        RIGHT), self._board[i, j + 1].get_side(
+                        LEFT))
+                if not i == self.n - 1:
+                    total_cost += Dist.get_border_distance(self._board[i, j].get_side(
+                        BOTTOM), self._board[i + 1, j].get_side(TOP))
+        if DEBUG:
+            print('sol_cost = ' + str(total_cost))
+        return total_cost
     # Pieces
 
     def get_piece_index_in_position(self, pos):

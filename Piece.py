@@ -32,7 +32,7 @@ class Piece:
 
     def get_side(self, side_index):
         '''
-        :param side_index: an integer representing a matrix side
+        :param side_index: an integer representing a matrix sid e
         :return: corresponding side
         '''
         return self.borders[side_index]
