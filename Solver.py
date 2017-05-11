@@ -26,18 +26,18 @@ class Solver:
     def solve(self):
         matches = {}
         if self.board.n > 2 and self.board.m > 2:
-            STARTING = 1
+            starting = 1
         else:
-            STARTING = 0
-        for k in range(STARTING, self.board.n - STARTING):
-            for l in range(STARTING, self.board.m - STARTING):
+            starting = 0
+        for k in range(starting, self.board.n - starting):
+            for l in range(starting, self.board.m - starting):
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
                     matches[cost] = board
                 if DEBUG:
-                    print(str(l) + " checks out of " + str(self.board.m - STARTING))
+                    print(str(l) + " checks out of " + str(self.board.m - starting))
             if DEBUG:
-                print(str(k) + " large iter out of " + str(self.board.n - STARTING))
+                print(str(k) + " large iter out of " + str(self.board.n - starting))
         if DEBUG:
             best_matches = HF.best_k_values(matches, const.MATCH_NUM)
             for key in best_matches:
