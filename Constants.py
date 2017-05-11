@@ -3,12 +3,12 @@ import math
 # Game variables - Change the functionallity of the game, should be changed
 
 IMG_ADR = "lily.jpg"
-N = 3
+N = 6
 LENGTH_CHECK_PRECENTAGE = 10
-MATCH_NUM = 3#10
+MATCH_NUM = 5#10
 SUBFOLDER = "picture_data/"
 
-DEBUG = False#True
+DEBUG = True
 STEP_BY_STEP_DEBUG = False#True
 
 # System variables - Should not be changed after done developing
@@ -25,10 +25,3 @@ BOTTOM = 3  # (i+1, j)
 INVERSE = 3
 NO_PIECE = -1
 ALL_DIRECTIONS = [TOP, LEFT, RIGHT, BOTTOM]
-
-# Algorithms
-BETTER = 0
-OLD_HUNGARIAN = 1
-BRUTE_FORCE = 2
-INTUITIVE = 3
-ALGO_NAME = ['BETTER', 'old hungarian', 'brute force', 'intuitive']

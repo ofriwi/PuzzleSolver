@@ -9,9 +9,10 @@ import DistanceAnalysis as Dist
 import Picture
 import os
 import time
+import scipy.misc
 
 
-def single_pic_sol(image_address, min_n, max_n=0):
+def single_solver_type_comparison(image_address, solver_type, min_n, max_n=0):
     '''
     :param image_address: adress of desired image 
     param min_n: min_n^2 is the minimal number of puzzle_pieces to be cut
@@ -19,27 +20,32 @@ def single_pic_sol(image_address, min_n, max_n=0):
     '''
     if (max_n == 0):  # only once
         max_n = min_n
+    result_dictionary = dict()
+    for n in range(min_n, max_n + 1):
+        single_run(image_address, n, result_file, solver_type, result_dictionary)
+
+    # writing results
+    picture_name = HF.address_to_name(image_address)
     result_file = open(SUBFOLDER + HF.address_to_name(image_address), "w")
-    for n in range(min_n, max_n):
-        single_run(image_address, n, result_file)
+    result_file.write(picture_name + " - " + ALGO_NAME[solver_type] + "\n")
+    for result_param in TUPLE_RESLT_INDEXES:
+        result_file.write(PARAMETER_NAME[result_param] + "\n")
+        for n in range(min_n, max_n + 1):
+            result_file.write(result_dictionary(n, solver_type)[i])
+            # TODO insert PARAMETER_NAME and result_param indexes to CONSTANTS
 
 
-def single_run(image_address, n, result_file):
+def single_run(image_address, n, solver_type, result_dictionary):
     '''
     :param image_address: address of desired image 
     :param n: n^2 is the number of puzzle pieces to be cut
     '''
     square_puzzle = Picture.Picture(image_address, n, n)
-    picture_name = HF.address_to_name((image_address))
-    solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces")
-    time_before = time.time()
-    puzzle_solver = Solver(square_puzzle)
-    piece_board = puzzle_solver.solve()
-    piece_matrix = piece_board.get_solution_array()
-    running_time = time.time - time_before()
-    HF.matrix_to_picture(piece_matrix, solution_name)
-    result_file.write(
-        "%X% pieces: % [sec]\n" % str(n) % str(n) % str(running_time))
+    picture_name = HF.address_to_name(image_address)
+    solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces - " + ALGO_NAME[solver_type])
+    solver = Solver(square_puzzle, solver_type)
+    result_dictionary[(n, solver_type)] = solver.get_results
+    scipy.misc.imsave(solution_name + "jpg", solver.get_results[5])
 
 
 def create_square_puzzle(image_address, n):
@@ -51,19 +57,14 @@ def create_square_puzzle(image_address, n):
 
 
 picture = create_square_puzzle(IMG_ADR, N)
-solver = Solver.Solver(picture, INTUITIVE)
-
-#for i in range(4, 10, 2):
- #   picture = create_square_puzzle(IMG_ADR, i)
-  #  solver = Solver.Solver(picture)
-
+solver = Solver.Solver(picture)
 if STEP_BY_STEP_DEBUG:
     solver.single_solution((1, 1), 5)
-    picture.picture_cost()
-#picture = create_square_puzzle(IMG_ADR, 5)
-#solver = Solver.Solver(picture)
-#picture = create_square_puzzle(IMG_ADR, 6)
-#solver = Solver.Solver(picture)
+picture.picture_cost()
+# picture = create_square_puzzle(IMG_ADR, 5)
+# solver = Solver.Solver(picture)
+# picture = create_square_puzzle(IMG_ADR, 6)
+# solver = Solver.Solver(picture)
 
 # print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 
