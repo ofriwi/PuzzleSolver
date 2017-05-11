@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 # import scipy.misc
+import os
 
 from Constants import *
 import numpy as np
@@ -27,7 +28,7 @@ def show_image(img_arr):
 
 
 def tuple_list_to_2d(lst):
-    return np.array([list(item) for item in lst])
+    return np.array([lst[i, :] for i in range(len(lst))])
 
 
 def matrix_to_picture(piece_matrix, picture_name):

@@ -7,7 +7,8 @@ import math
 def get_distance_matrix(piece_list, name=''):
     '''
     :param piece_list: a list of pieces
-    :return: an lXl matrix of tuples represnting piece distances, where l is piece_list's length
+    :return: an lXl matrix containing lists of length 4 representing piece 
+    distances, where l is piece_list's length
     '''
     # TODO load
     l = len(piece_list)
@@ -15,30 +16,42 @@ def get_distance_matrix(piece_list, name=''):
     if os.path.isfile(file_name):
         distance_matrix = load_from_file(file_name)
     else:
-        distance_matrix = np.zeros((l, l), tuple)
+        distance_matrix = np.zeros((l, l, 4), dtype=float)
+        # fill matrix
         for i in range(l):
+            # mid-run printing
+            print(i.__str__() + ' ' + l.__str__())
             for j in range(l):
+                distance_list_ij = get_distance_list(piece_list[i],
+                                                     piece_list[j])
                 if i == j:
-                    distance_matrix[i, j] = (INF, INF, INF, INF)
+                    distance_matrix[i, j, :] = INF
                 else:
-                    distance_matrix[i, j] = get_distance_tuple(piece_list[i], piece_list[j])
-                print(i.__str__() + ' ' + l.__str__())
-        if file_name is not '':
-            save_to_file(file_name, distance_matrix)
+                    distance_matrix[i, j, :] = distance_list_ij
+
+                    # for k in range(4):
+                    #   if i == j:
+                    #      distance_matrix[i, j, k] = INF
+                    # else:
+                    #    distance_matrix[i, j, k] = distance_list_ij[k]
+
+    if file_name is not '':
+        save_to_file(file_name, distance_matrix)
+    # print(distance_matrix[0, 0, 0])  # TODO debug
     return distance_matrix
 
 
-def get_distance_tuple(piece1, piece2):
+def get_distance_list(piece1, piece2):
     '''
     :param piece1: one piece
     :param piece2: another piece
     :return: a tuple containing all 4 distances
     '''
-    tup = ()
-    for i in range(4):
-        tup += (get_border_distance(piece1.borders[i], piece2.borders[corresponding_side(i)]),)
-    return tup
-    #return (get_distance_between_borders(piece1, piece2, index) for index in range(4))
+    lst = [get_border_distance(piece1.borders[i],
+                               piece2.borders[corresponding_side(i)])
+           for i in range(4)]
+    return lst
+    # return (get_distance_between_borders(piece1, piece2, index) for index in range(4))
 
 
 def get_border_distance(border1, border2):
@@ -54,12 +67,12 @@ def get_border_distance(border1, border2):
     for i in range(n):
         for j in range(n):
             if i - w + 1 <= j <= i + w - 1:
-                DT[i, j] = calculate_dist(abs(border1[i] - border2[j]) + min(DT[i - 1, j],
-                                                                    DT[i, j - 1],
-                                                                    DT[i - 1, j - 1]))
+                DT[i, j] = calculate_dist(abs(border1[i] - border2[j]) +
+                                          min(DT[i - 1, j], DT[i, j - 1],
+                                              DT[i - 1, j - 1]))
             else:
                 DT[i, j] = INF
-        #print(i.__str__() + '/' + n.__str__())
+                # print(i.__str__() + '/' + n.__str__())
     return DT[n - 1, n - 1]
 
 
@@ -68,7 +81,7 @@ def corresponding_side(side_index):
     :param side_index: an integer representing a matrix side
     :return: index representing the other side of the matrix
     '''
-    return INVERSE_CONST - side_index
+    return INVERSE - side_index
 
 
 def calculate_dist(pixel_distance):
@@ -80,6 +93,7 @@ def calculate_dist(pixel_distance):
     :return: the distance
     '''
     return float(sum(pixel_distance)) / max(len(pixel_distance), 1)
+
 
 # File io
 

@@ -2,6 +2,8 @@ import Board
 import HelpingFunction as HF
 import hungarian as Hungarian
 import Constants as const
+import numpy as np
+from Constants import *
 
 
 class Solver:
@@ -21,7 +23,7 @@ class Solver:
     # Solver
 
     def solve(self):
-        self.matches = {}
+        matches = {}
         if self.board.n > 2 and self.board.m > 2:
             STARTING = 1
         else:
@@ -30,9 +32,9 @@ class Solver:
             for l in range(STARTING, self.board.m - STARTING):
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
-                    self.matches[cost] = board
-        min_cost = min(self.matches.keys())
-        return self.matches[min_cost]
+                    matches[cost] = board
+        min_cost = min(matches.keys())
+        matches[min_cost].show_solution()
         # best_matches = HF.best_k_values(self.matches, const.MATCH_NUM)
         # for key in best_matches:
         #   self.matches[key].show_solution()
@@ -55,10 +57,8 @@ class Solver:
 
         self.build_around(pos)
 
-        # TODO : save cost
-
         # self.board.show_solution()
-        # input()
+
         return self.current_cost, self.board  # TODO: better
 
     def build_around(self, pos):
@@ -72,7 +72,10 @@ class Solver:
 
         # Lines 8 - 9
         empty_directions = self.board.get_empty_directions_around(pos)
-        assign, cost = self.get_hungarian(piece_index, empty_directions)
+        #        assign, cost = self.get_hungarian(piece_index, empty_directions)
+        assign, cost = self.better_hungarian(piece_index, empty_directions,
+                                             pos)
+
         self.current_cost += cost
 
         # Lines 10 - 11
@@ -99,10 +102,13 @@ class Solver:
         # Get i * unassigned
         row_distance_matrix = self.board.get_distance_matrix()[
             piece_index, self.board.get_unassigned_cells()]
+        print(row_distance_matrix)
+        row_distance_matrix = row_distance_matrix[:, valid_directions]
+        print(row_distance_matrix)
         # Convert to 2d array
         H = HF.tuple_list_to_2d(row_distance_matrix)
         # Take only valid directions
-        H = H[:, valid_directions]
+        # H = H[:, valid_directions]
         # Calculate hungarian
         hungarian = Hungarian.Hungarian(H)
         hungarian.calculate()
@@ -112,6 +118,86 @@ class Solver:
                   hungarian.get_results()]
         cost = hungarian.get_total_potential()
         return result, cost
+
+    def debug_hungarian(self, piece_index, valid_directions):
+        '''
+        Get the hungarian arrangement around a piece
+        :param piece_index: the piece's index
+        :param valid_directions: direction with empty cells as list [T, R, L, B]
+        :return: list of tuples (index, direction) where index is the index of the matching piece 
+            and the direction is the direction relative to the piece
+        '''
+        # Get i * unassigned
+        D = self.board.get_distance_matrix()
+        row_distance_matrix = D[piece_index, :, :][
+                              self.board.get_unassigned_cells(), :][:,
+                              valid_directions]
+        print(row_distance_matrix)
+        # Convert to 2d array
+        H = row_distance_matrix  # .reshape(row_distance_matrix.shape[1], row_distance_matrix.shape[2])
+        # Take only valid directions
+        # H = H[:, valid_directions]
+        # Calculate hungarian
+        hungarian = Hungarian.Hungarian(H)
+        hungarian.calculate()
+        # Get the correct indexes of unassigned cells and valid directions
+        result = [(self.board.get_unassigned_cells()[index],
+                   valid_directions[direction]) for (index, direction) in
+                  hungarian.get_results()]
+        cost = hungarian.get_total_potential()
+        return result, cost
+
+    def better_hungarian(self, piece_index, valid_directions, pos):
+        '''
+        Get the hungarian arrangement around a piece
+        :param piece_index: the piece's index
+        :param valid_directions: direction with empty cells as list [T, R, L, B]
+        :return: list of tuples (index, direction) where index is the index of the matching piece 
+            and the direction is the direction relative to the piece
+        '''
+        # Get i * unassigned
+        D = self.board.get_distance_matrix()
+        # row_distance_matrix = get_row
+        # print(row_distance_matrix)
+        # Convert to 2d array
+        H = self.get_H_matrix(
+            pos)  # row_distance_matrix#.reshape(row_distance_matrix.shape[1], row_distance_matrix.shape[2])
+        # Take only valid directions
+        H = H[:, valid_directions]
+        # Calculate hungarian
+        hungarian = Hungarian.Hungarian(H)
+        hungarian.calculate()
+        # Get the correct indexes of unassigned cells and valid directions
+        result = [(self.board.get_unassigned_cells()[index],
+                   valid_directions[direction]) for (index, direction) in
+                  hungarian.get_results()]
+        cost = hungarian.get_total_potential()
+        return result, cost
+
+    def get_H_matrix(self, pos):
+        H = np.ones((len(self.board.get_unassigned_cells()), 4)) * INF
+        for direction in self.board.get_empty_directions_around(pos):
+            empty_cell_pos = self.board.get_position_in_direction(pos,
+                                                                  direction)
+            H[:, direction] = self.row_matrix_for_pos(empty_cell_pos)
+        return H
+
+    def row_matrix_for_pos(self, pos):
+        D = self.board.get_distance_matrix()
+        avg = 0
+        counter = 0
+        for direction in ALL_DIRECTIONS:
+            other_piece_pos = self.board.get_position_in_direction(pos,
+                                                                   direction)
+            if self.board.is_cell_filled(other_piece_pos):
+                other_piece = self.board.get_piece_index_in_position(
+                    other_piece_pos)
+                row_around = D[
+                    other_piece, self.board.get_unassigned_cells(), INVERSE - direction]
+                avg += row_around
+                counter += 1
+        avg = avg / counter
+        return avg
 
     # Line 13
     def get_next_position_to_match(self, cur_pos):

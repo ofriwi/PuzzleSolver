@@ -1,6 +1,7 @@
 import DistanceAnalysis as Dist
 from Constants import *
 import HelpingFunction as HF
+import numpy as np
 
 '''
 Piece class represents a single Puzzle piece
@@ -27,6 +28,7 @@ class Piece:
         left_col = self.matrix[:, 0]
         right_col = self.matrix[:, self.m - 1]
         self.borders = [top_line, left_col, right_col, bottom_line]
+        self.gradients = [np.gradient(border) for border in self.borders]
 
     def get_side(self, side_index):
         '''

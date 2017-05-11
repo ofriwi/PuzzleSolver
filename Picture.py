@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 
+import DistanceAnalysis as Dist
 import HelpingFunction as HF
 import Piece
 from Constants import *
@@ -8,9 +9,9 @@ from Constants import *
 
 class Picture:
     '''
-    img_arr - nparray
-    board - nparray of arranged pieces
-    pieces - list of pieces (Attention - not nparray)
+    img_arr - np array
+    board - np array of arranged pieces
+    pieces - list of pieces (Attention - not np array)
     height, width - in pixels
     piece_height, piece_width - in pixels
     n, m - width and height (in # of pieces)
@@ -47,6 +48,7 @@ class Picture:
 
         # Initialize board and pieces
         self.pieces = self.crop_image()
+        self.distance_matrix = Dist.get_distance_matrix(self.pieces, self.name)
 
     def crop_image(self):
         '''
@@ -56,7 +58,8 @@ class Picture:
         pieces = []
         for i in range(0, self.height, self.piece_height):
             for j in range(0, self.width, self.piece_width):
-                pieces.append(Piece.Piece(self.img_arr[i:i + self.piece_height, j:j + self.piece_width].copy()))
+                pieces.append(Piece.Piece(self.img_arr[i:i + self.piece_height,
+                                          j:j + self.piece_width].copy()))
         return pieces
 
     # Image handling

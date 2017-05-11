@@ -9,13 +9,16 @@ import os
 import time
 
 
-def single_pic_sol(image_address, max_n):
+def single_pic_sol(image_address, min_n, max_n=0):
     '''
     :param image_address: adress of desired image 
+    param min_n: min_n^2 is the minimal number of puzzle_pieces to be cut
     :param max_n: max_n^2 is the maximal number of puzzle pieces to be cut
     '''
+    if (max_n == 0):  # only once
+        max_n = min_n
     result_file = open(SUBFOLDER + HF.address_to_name(image_address), "w")
-    for n in range(3, max_n):
+    for n in range(min_n, max_n):
         single_run(image_address, n, result_file)
 
 
@@ -41,8 +44,17 @@ def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
 
-picture = create_square_puzzle(IMG_ADR, N)
+# run main
+# single_pic_sol(IMG_ADR, N)
+
+
+picture = create_square_puzzle(IMG_ADR, 4)
 solver = Solver.Solver(picture)
+picture = create_square_puzzle(IMG_ADR, 5)
+solver = Solver.Solver(picture)
+picture = create_square_puzzle(IMG_ADR, 6)
+solver = Solver.Solver(picture)
+
 # print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
 
 # Dist.get_distance_between_borders(board.pieces[0], board.pieces[1], 0)

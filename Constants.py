@@ -2,8 +2,8 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "face.jpg"
-N = 3
+IMG_ADR = "etsi.jpg"
+N = 4
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 10
 SUBFOLDER = "picture_data/"
@@ -19,5 +19,6 @@ TOP = 0  # (i-1,j)
 LEFT = 1  # (i,j-1)
 RIGHT = 2  # (i, j+1)
 BOTTOM = 3  # (i+1, j)
-INVERSE_CONST = 3
+INVERSE = 3
 NO_PIECE = -1
+ALL_DIRECTIONS = [TOP, LEFT, RIGHT, BOTTOM]

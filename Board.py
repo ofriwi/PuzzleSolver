@@ -40,7 +40,6 @@ class Board:
         self._board_indexes = np.ones((self.n, self.m), int) * -1
         self._indexes = list(range(self.n * self.m))
         self._pieces = np.array(picture.pieces)
-        self._distance_matrix = Dist.get_distance_matrix(self._pieces, self.picture.name)
 
         # Initialize solver
         # self.solver = Solver.Solver(self)
@@ -74,7 +73,7 @@ class Board:
         Get a distance matrix of the board
         :return: Distance matrix
         """
-        return self._distance_matrix
+        return self.picture.distance_matrix
 
     # Pieces
 
@@ -108,6 +107,23 @@ class Board:
         self._board_indexes[pos[0], pos[1]] = piece_index
         self._indexes.remove(piece_index)
 
+    def get_position_in_direction(self, pos, direction):
+        '''
+        Get a tuple of the position in direction to another position
+        :param pos: 
+        :param direction: 
+        :return: 
+        '''
+        if direction == TOP:
+            return pos[0] - 1, pos[1]
+        if direction == LEFT:
+            return pos[0], pos[1] - 1
+        if direction == RIGHT:
+            return pos[0], pos[1] + 1
+        if direction == BOTTOM:
+            return pos[0] + 1, pos[1]
+        return None
+
     def get_unassigned_cells(self):
         """
         Get list of all unassigned indexes
@@ -123,14 +139,7 @@ class Board:
         :param direction: TOP, RIGHT, LEFT or BOTTOM
         :return: 
         """
-        if direction == TOP:
-            self.add_piece_index_in_position((pos[0] - 1, pos[1]), piece_index)
-        if direction == LEFT:
-            self.add_piece_index_in_position((pos[0], pos[1] - 1), piece_index)
-        if direction == RIGHT:
-            self.add_piece_index_in_position((pos[0], pos[1] + 1), piece_index)
-        if direction == BOTTOM:
-            self.add_piece_index_in_position((pos[0] + 1, pos[1]), piece_index)
+        self.add_piece_index_in_position(self.get_position_in_direction(pos, direction), piece_index)
 
     def is_puzzle_completed(self):
         """
