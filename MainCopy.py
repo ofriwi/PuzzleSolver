@@ -9,7 +9,7 @@ import DistanceAnalysis as Dist
 import Picture
 import os
 import time
-import scipy.misc
+#import scipy.misc
 
 
 def single_solver_type_comparison(image_address, solver_type, min_n, max_n=0):
@@ -21,17 +21,17 @@ def single_solver_type_comparison(image_address, solver_type, min_n, max_n=0):
     if (max_n == 0):  # only once
         max_n = min_n
     result_dictionary = dict()
-    for n in range(min_n, max_n + 1):
-        single_run(image_address, n, result_file, solver_type, result_dictionary)
+    #for n in range(min_n, max_n + 1):
+     #   single_run(image_address, n, result_file, solver_type, result_dictionary)
 
     # writing results
     picture_name = HF.address_to_name(image_address)
     result_file = open(SUBFOLDER + HF.address_to_name(image_address), "w")
     result_file.write(picture_name + " - " + ALGO_NAME[solver_type] + "\n")
-    for result_param in TUPLE_RESLT_INDEXES:
-        result_file.write(PARAMETER_NAME[result_param] + "\n")
-        for n in range(min_n, max_n + 1):
-            result_file.write(result_dictionary(n, solver_type)[i])
+    #for result_param in TUPLE_RESLT_INDEXES:
+     #   result_file.write(PARAMETER_NAME[result_param] + "\n")
+      #  for n in range(min_n, max_n + 1):
+       #     result_file.write(result_dictionary(n, solver_type)[i])
             # TODO insert PARAMETER_NAME and result_param indexes to CONSTANTS
 
 
@@ -45,7 +45,7 @@ def single_run(image_address, n, solver_type, result_dictionary):
     solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces - " + ALGO_NAME[solver_type])
     solver = Solver.Solver(square_puzzle, solver_type)
     result_dictionary[(n, solver_type)] = solver.get_results
-    scipy.misc.imsave(solution_name + "jpg", solver.get_results[5])
+    # scipy.misc.imsave(solution_name + "jpg", solver.get_results[5])
 
 
 def create_square_puzzle(image_address, n):
@@ -57,7 +57,7 @@ def create_square_puzzle(image_address, n):
 
 
 picture = create_square_puzzle(IMG_ADR, N)
-solver = Solver.Solver(picture, BRUTE_FORCE)
+solver = Solver.Solver(picture, BETTER)
 if STEP_BY_STEP_DEBUG:
     solver.single_solution((1, 1), 5)
 picture.picture_cost()
