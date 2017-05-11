@@ -2,19 +2,19 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "etsi.jpg"
-N = 4
+IMG_ADR = "lily.jpg"
+N = 6
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 5#10
 SUBFOLDER = "picture_data/"
 
 DEBUG = True
-STEP_BY_STEP_DEBUG = True
+STEP_BY_STEP_DEBUG = False#True
 
 # System variables - Should not be changed after done developing
 
 INF = 2147483647  # float('inf') - 1
-GRAY = 'LA'
+GRAY = 'L'
 PIXEL_DIMENTION = 2
 
 # Side indexes

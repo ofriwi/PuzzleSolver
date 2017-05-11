@@ -63,18 +63,40 @@ def get_border_distance(border1, border2):
     '''
     n = len(border1)
     w = int(n * LENGTH_CHECK_PRECENTAGE / 100)
-    DT = np.zeros((n, n))
+    DT = np.zeros((n, n), dtype=int)
     for i in range(n):
         for j in range(n):
             if i - w + 1 <= j <= i + w - 1:
-                DT[i, j] = calculate_dist(abs(border1[i] - border2[j]) +
-                                          min(DT[i - 1, j], DT[i, j - 1],
-                                              DT[i - 1, j - 1]))
+                ##### TODO debug
+                #DT[i, j] = abs(border1[i] - border2[j]) + min(DT[i - 1, j], DT[i, j - 1],
+                 #                             DT[i - 1, j - 1])
+                DT[i, j] = step_distance(DT, border1, border2, i, j)
+                # print(i.__str__() + '/' + n.__str__())else:
             else:
                 DT[i, j] = INF
-                # print(i.__str__() + '/' + n.__str__())
     return DT[n - 1, n - 1]
 
+
+def step_distance(DT, border1, border2, i, j):
+    '''
+    Calculate the distance between two pixels, and add the minimum from previous step
+    :param DT: Distance matrix
+    :param border1: piece1's border
+    :param border2: piece2's border
+    :param i: i index
+    :param j: j index
+    :return: calculated distance
+    '''
+    if i == 0 and j == 0:
+        step = abs(int(border1[i]) - int(border2[j]))
+    elif i == 0:
+        step = abs(int(border1[i]) - int(border2[j])) + DT[i, j - 1]
+    elif j == 0:
+        step = abs(int(border1[i]) - int(border2[j])) + DT[i - 1, j]
+    else:
+        step = abs(int(border1[i]) - int(border2[j])) + min(DT[i - 1, j], DT[i, j - 1]
+                                                  , DT[i - 1, j - 1])
+    return step
 
 def corresponding_side(side_index):
     '''
@@ -82,17 +104,6 @@ def corresponding_side(side_index):
     :return: index representing the other side of the matrix
     '''
     return INVERSE - side_index
-
-
-def calculate_dist(pixel_distance):
-    '''
-    Calculate pixel's distance.
-    Currently average, but could be changed.
-    (W, B) or (R, G, B) to number
-    :param pixel_distance: a tuple representaion of distance between pixels
-    :return: the distance
-    '''
-    return float(sum(pixel_distance)) / max(len(pixel_distance), 1)
 
 
 # File io

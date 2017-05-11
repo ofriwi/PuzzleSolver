@@ -1,3 +1,5 @@
+from PIL import Image
+
 import Board
 import numpy as np
 import HelpingFunction as HF
@@ -48,9 +50,10 @@ def create_square_puzzle(image_address, n):
 # single_pic_sol(IMG_ADR, N)
 
 
-picture = create_square_puzzle(IMG_ADR, 4)
+picture = create_square_puzzle(IMG_ADR, N)
 solver = Solver.Solver(picture)
-solver.single_solution((1, 1), 5)
+if STEP_BY_STEP_DEBUG:
+    solver.single_solution((1, 1), 5)
 picture.picture_cost()
 #picture = create_square_puzzle(IMG_ADR, 5)
 #solver = Solver.Solver(picture)

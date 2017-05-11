@@ -67,11 +67,11 @@ class Board:
             for l in range(self.n):
                 if self._board_indexes[k, l] == -1:
                     solved[(k * self.piece_height):((k + 1) * self.piece_height)
-                        , (l * self.piece_width):((l + 1) * self.piece_width), :] = np.zeros((
-                        self.piece_height, self.piece_width, 2))
+                        , (l * self.piece_width):((l + 1) * self.piece_width)] = np.zeros((
+                        self.piece_height, self.piece_width))
                 else:
                     solved[(k * self.piece_height):((k + 1) * self.piece_height)
-                        , (l * self.piece_width):((l + 1) * self.piece_width), :] \
+                        , (l * self.piece_width):((l + 1) * self.piece_width)] \
                         = self._board[k, l].matrix
         return solved
 

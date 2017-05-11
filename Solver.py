@@ -79,7 +79,6 @@ class Solver:
         # TODO debug
         assign, cost = self.better_hungarian(piece_index, empty_directions,
                                              pos)
-
         self.current_cost += cost
 
         # Lines 10 - 11
@@ -109,9 +108,9 @@ class Solver:
         # Get i * unassigned
         row_distance_matrix = self.board.get_distance_matrix()[
             piece_index, self.board.get_unassigned_cells()]
-        print(row_distance_matrix)
+        # print(row_distance_matrix)
         row_distance_matrix = row_distance_matrix[:, valid_directions]
-        print(row_distance_matrix)
+        # print(row_distance_matrix)
         # Convert to 2d array
         H = HF.tuple_list_to_2d(row_distance_matrix)
         # Take only valid directions
@@ -139,7 +138,7 @@ class Solver:
         row_distance_matrix = D[piece_index, :, :][
                               self.board.get_unassigned_cells(), :][:,
                               valid_directions]
-        print(row_distance_matrix)
+        # print(row_distance_matrix)
         # Convert to 2d array
         H = row_distance_matrix  # .reshape(row_distance_matrix.shape[1], row_distance_matrix.shape[2])
         # Take only valid directions
@@ -189,8 +188,10 @@ class Solver:
             H[:, direction] = self.row_matrix_for_pos(empty_cell_pos)
         return H
 
+
     def row_matrix_for_pos(self, pos):
         D = self.board.get_distance_matrix()
+        D = D[:, self.board.get_unassigned_cells(), :]
         avg = 0
         counter = 0
         for direction in ALL_DIRECTIONS:
@@ -200,7 +201,9 @@ class Solver:
                 other_piece = self.board.get_piece_index_in_position(
                     other_piece_pos)
                 row_around = D[
-                    other_piece, self.board.get_unassigned_cells(), INVERSE-direction]
+                    other_piece, 0:len(self.board.get_unassigned_cells())
+                ,
+                             INVERSE-direction]
                 avg += row_around
                 counter += 1
         avg = avg / counter
