@@ -10,7 +10,6 @@ def get_distance_matrix(piece_list, name=''):
     :return: an lXl matrix containing lists of length 4 representing piece 
     distances, where l is piece_list's length
     '''
-    # TODO load
     l = len(piece_list)
     file_name = name + str(l) + '.npy'
     if os.path.isfile(file_name):
@@ -37,7 +36,6 @@ def get_distance_matrix(piece_list, name=''):
 
     if file_name is not '':
         save_to_file(file_name, distance_matrix)
-    # print(distance_matrix[0, 0, 0])  # TODO debug
     return distance_matrix
 
 
@@ -67,11 +65,7 @@ def get_border_distance(border1, border2):
     for i in range(n):
         for j in range(n):
             if i - w + 1 <= j <= i + w - 1:
-                ##### TODO debug
-                #DT[i, j] = abs(border1[i] - border2[j]) + min(DT[i - 1, j], DT[i, j - 1],
-                 #                             DT[i - 1, j - 1])
                 DT[i, j] = step_distance(DT, border1, border2, i, j)
-                # print(i.__str__() + '/' + n.__str__())else:
             else:
                 DT[i, j] = INF
     return DT[n - 1, n - 1]

@@ -91,7 +91,6 @@ class Board1:
     # Solver
 
     def solve(self):
-        # TODO
         return
 
     # Pieces handling

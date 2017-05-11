@@ -3,7 +3,7 @@ import math
 # Game variables - Change the functionallity of the game, should be changed
 
 IMG_ADR = "lily.jpg"
-N = 5
+N = 6
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 5#10
 SUBFOLDER = "picture_data/"
