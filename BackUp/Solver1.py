@@ -15,10 +15,8 @@ class Solver1:
     current_cost - cost of the current preposed solution
     '''
 
-    # TODO remove all pieces_set references
     # Main solver
     def solve(self):
-        # TODO
         #for k in range(self.board.height):
          #   for l in range(self.board.width):
           #      for index in range(len(self.board.pieces)):
@@ -47,8 +45,6 @@ class Solver1:
         self.board.add_piece_in_position(pos, piece_index)
 
         self.build_around(pos)
-
-        # TODO : save cost
 
         self.board.show_solution()
 

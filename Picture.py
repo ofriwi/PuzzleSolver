@@ -19,7 +19,6 @@ class Picture:
     name - title of the picture
     '''
 
-    # TODO rotate pieces?
     # Constructor
 
     def __init__(self, image_address, n, m=0):

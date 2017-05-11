@@ -52,9 +52,14 @@ def create_square_puzzle(image_address, n):
 
 picture = create_square_puzzle(IMG_ADR, N)
 solver = Solver.Solver(picture)
+
+#for i in range(4, 10, 2):
+ #   picture = create_square_puzzle(IMG_ADR, i)
+  #  solver = Solver.Solver(picture)
+
 if STEP_BY_STEP_DEBUG:
     solver.single_solution((1, 1), 5)
-picture.picture_cost()
+    picture.picture_cost()
 #picture = create_square_puzzle(IMG_ADR, 5)
 #solver = Solver.Solver(picture)
 #picture = create_square_puzzle(IMG_ADR, 6)

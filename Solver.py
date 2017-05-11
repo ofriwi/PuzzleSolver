@@ -28,19 +28,25 @@ class Solver:
         if self.board.n > 2 and self.board.m > 2:
             STARTING = 1
         else:
-            STARTING = 0  # TODO: change
+            STARTING = 0
         for k in range(STARTING, self.board.n - STARTING):
             for l in range(STARTING, self.board.m - STARTING):
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
                     matches[cost] = board
-        min_cost = min(matches.keys())
-        matches[min_cost].show_solution()
+                if DEBUG:
+                    print(str(l) + " checks out of " + str(self.board.m - STARTING))
+            if DEBUG:
+                print(str(k) + " large iter out of " + str(self.board.n - STARTING))
         if DEBUG:
             best_matches = HF.best_k_values(matches, const.MATCH_NUM)
             for key in best_matches:
               matches[key].show_solution()
               print(key)
+        else:
+            min_cost = min(matches.keys())
+            matches[min_cost].show_solution()
+        return
 
     def single_solution(self, pos, piece_index):
         '''
@@ -61,7 +67,7 @@ class Solver:
 
         # self.board.show_solution()
 
-        return self.current_cost, self.board  # TODO: better
+        return self.current_cost, self.board
 
     def build_around(self, pos):
         '''
@@ -74,9 +80,6 @@ class Solver:
 
         # Lines 8 - 9
         empty_directions = self.board.get_empty_directions_around(pos)
-        #        assign, cost = self.get_hungarian(piece_index, empty_directions)
-        assign_reg, cost_reg = self.get_hungarian(piece_index, empty_directions) #
-        # TODO debug
         assign, cost = self.better_hungarian(piece_index, empty_directions,
                                              pos)
         self.current_cost += cost
@@ -93,8 +96,7 @@ class Solver:
             next_pos = self.get_next_position_to_match(pos)
             while next_pos is not None:
                 self.build_around(next_pos)
-                next_pos = self.get_next_position_to_match(
-                    pos)  # TODO check if better solution
+                next_pos = self.get_next_position_to_match(pos)
 
     # Lines 8-9
     def get_hungarian(self, piece_index, valid_directions):
@@ -187,7 +189,6 @@ class Solver:
                                                                   direction)
             H[:, direction] = self.row_matrix_for_pos(empty_cell_pos)
         return H
-
 
     def row_matrix_for_pos(self, pos):
         D = self.board.get_distance_matrix()
