@@ -44,4 +44,5 @@ TUPLE_RESULT_INDEXES = [RUNNING_TIME, CORRECT_BORDERS, IS_TRUE, COST]
 PARAMETER_NAME = ["Running Time", "Correct Borders", "Is Correct Solution", "Cost"]
 
 # image lis
-IMAGE_LIST = ["Lenna", "LennaAllEffects", "MonetLilies", "RepeatingText"]
+IMAGE_LIST = ["Blackboard", "Code", "IsisResearch", "Jungle", "LessHandsomeRichter", "MachzorSiur", "Monroe", "Sea",
+              "VanGoghWheat", "YellowCars", "Lenna", "LennaAllEffects", "MonetLilies", "RepeatingText"]
