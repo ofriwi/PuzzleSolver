@@ -68,3 +68,9 @@ def address_to_name(address):
     :return: file name
     '''
     return (os.path.splitext(address)[0])
+
+
+def swap_in_array(array, index1, index2):
+    temp = array[index1]
+    array[index1] = array[index2]
+    array[index2] = temp

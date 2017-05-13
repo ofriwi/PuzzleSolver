@@ -2,15 +2,15 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "lily.jpg"
-N = 3
+IMG_ADR = "etsi.jpg"
+N = 4
 LENGTH_CHECK_PRECENTAGE = 10
-MATCH_NUM = 3  # 10
+MATCH_NUM = 3
 SUBFOLDER = "picture_data/"
 
-DEBUG = False  # True
-STEP_BY_STEP_DEBUG = False  # True
-
+DEBUG = False#True
+STEP_BY_STEP_DEBUG = False#True
+IMAGE_LIST = ["etsi.jpg", "face.jpg"]
 # System variables - Should not be changed after done developing
 
 INF = 2147483647  # float('inf') - 1
@@ -32,17 +32,3 @@ OLD_HUNGARIAN = 1
 BRUTE_FORCE = 2
 INTUITIVE = 3
 ALGO_NAME = ['BETTER', 'old hungarian', 'brute force', 'greedy']
-
-# Result Indexes
-RUNNING_TIME = 0
-CORRECT_BORDERS = 1
-IS_TRUE = 2
-COST = 3
-SOLUTION = 4
-
-TUPLE_RESULT_INDEXES = [RUNNING_TIME, CORRECT_BORDERS, IS_TRUE, COST]
-PARAMETER_NAME = ["Running Time", "Correct Borders", "Is Correct Solution", "Cost"]
-
-# image lis
-IMAGE_LIST = ["Blackboard", "Code", "IsisResearch", "Jungle", "LessHandsomeRichter", "MachzorSiur", "Monroe", "Sea",
-              "VanGoghWheat", "YellowCars", "Lenna", "LennaAllEffects", "MonetLilies", "RepeatingText"]

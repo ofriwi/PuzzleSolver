@@ -32,6 +32,8 @@ class Solver:
             result = self.brute_force_algorithm()
         elif self.solver_type == INTUITIVE:
             result = self.intuitive_algorithm()
+        else:
+            result = None
         return result
 
     def brute_force_algorithm(self):
@@ -50,30 +52,31 @@ class Solver:
 
     def intuitive_algorithm(self):
         matches = {}
+        D = self.board.get_distance_matrix()
+        last_cell = 0
+        upper_cell = 0
         for index in range(len(self._picture.pieces)):
             self.board = Board.Board(self._picture)
             cost = 0
             for k in range(self.board.n):
                 for l in range(self.board.m):
                     if k == 0 and l == 0:
-                        self.board.add_piece_index_in_position((k, l), index)
-                    elif k != self.board.n - 1:
-                        D = self.board.get_distance_matrix()
-                        #hungarian = Hungarian.Hungarian(D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM])
-                        #hungarian.calculate()
-                        #assign, cost = hungarian.get_results()
-                        cost += min(D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM])
-                        match_index = D[self.board.get_piece_index_in_direction((k, l), TOP), self.board.get_unassigned_cells(), BOTTOM]
-                        self.board.add_piece_index_in_position((k, l), match_index)
+                        match_index = index
+                        upper_cell = index
+                    elif l != 0:
+                        match_index = np.argmin(D[last_cell, self.board.get_unassigned_cells(), RIGHT])
+                        match_index = self.board.get_unassigned_cells()[match_index]
+                        cost += D[last_cell, match_index, RIGHT]
                     else:
-                        D = self.board.get_distance_matrix()
-                        match_index = min(D[self.board.get_piece_index_in_direction((k, l), LEFT), self.board.get_unassigned_cells(), RIGHT])
-                        cost += D[match_index]
-                        self.board.add_piece_index_in_position((k, l), match_index)
+                        match_index = np.argmin(D[upper_cell, self.board.get_unassigned_cells(), BOTTOM])
+                        match_index = self.board.get_unassigned_cells()[match_index]
+                        cost += D[last_cell, match_index, BOTTOM]
+                        upper_cell = match_index
+                    self.board.add_piece_index_in_position((k, l), match_index)
+                    last_cell = match_index
             matches[cost] = self.board
         self.get_best_matches(matches, MATCH_NUM)
         return 0
-
 
     def our_algorithm(self):
         '''
@@ -106,6 +109,7 @@ class Solver:
         best_matches = HF.best_k_values(matches, number_of_values)
         for key in best_matches:
             matches[key].show_solution()
+            matches[key].get_correctness()
             if DEBUG:
                 print(key)
         return best_matches

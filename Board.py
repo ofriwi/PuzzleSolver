@@ -40,7 +40,6 @@ class Board:
         self._board_indexes = np.ones((self.n, self.m), int) * -1
         self._indexes = list(range(self.n * self.m))
         self._pieces = np.array(picture.pieces)
-
         # Initialize solver
         # self.solver = Solver.Solver(self)
 
@@ -98,6 +97,32 @@ class Board:
         if DEBUG:
             print('sol_cost = ' + str(total_cost))
         return total_cost
+
+    def get_correctness(self, by_connetions=True):
+        '''
+        
+        :return: 
+        '''
+        correct = 0
+        total = 0
+        if by_connetions:
+            for k in range(self.n):
+                for l in range(self.m):
+                    if k != 0:
+                        if self._board_indexes[k - 1, l] == self._board_indexes[k, l] - self.m:
+                            correct += 1
+                        total += 1
+                    if l != 0:
+                        if self._board_indexes[k, l - 1] == self._board_indexes[k, l] - 1:
+                            correct += 1
+                        total += 1
+        else:
+            for k in range(self.n):
+                for l in range(self.m):
+                    if self._board_indexes[k, l] == k * self.m + l:
+                        correct += 1
+                    total += 1
+        return int(float(correct) / total * 100)
 
     # Pieces
 

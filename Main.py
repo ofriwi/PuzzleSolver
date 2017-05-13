@@ -14,7 +14,7 @@ import random
 
 
 def main_type_comparison():
-    image_address = "testPictures/" + random.choose(IMAGE_LIST)
+    image_address = "testPictures/" + random.choose(IMAGE_LIST) #TODO
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " results type comparison" + str(random_num)
     comparison(image_address, ALGO_NAME, 3, 5, name, name + '/')
@@ -40,16 +40,16 @@ def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name
     parameter (running time, cost, etc...)
     solver_type: result
     '''
-    if (max_n == 0):  # only once
+    if max_n == 0:  # only once
         max_n = min_n
     result_dictionary = dict()
     for solver_type in solver_type_list:
         for n in range(min_n, max_n + 1):
-            single_run(image_address, n, solver_type, result_dictionary)
+            single_run(image_address, n, solver_type, result_dictionary,subfolder_name)
 
     # writing results
     picture_name = HF.address_to_name(image_address)
-    if result_file_name.equals(""):
+    if result_file_name == "":
         reuslt_file_name = picture_name
     result_file = open(subfolder_name + result_file_name, "w")
     result_file.write(picture_name + " - " + ALGO_NAME[solver_type] + "\n")
