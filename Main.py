@@ -1,27 +1,23 @@
 from PIL import Image
-
-import Board
 import numpy as np
 import HelpingFunction as HF
 import Solver
 from Constants import *
-import DistanceAnalysis as Dist
 import Picture
-import os
-import time
-import scipy.misc
 import random
 
 
+# TODO choose file randomly
+
 def main_type_comparison():
-    image_address = "testPictures/" + random.choose(IMAGE_LIST) #TODO
+    image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " results type comparison" + str(random_num)
-    comparison(image_address, ALGO_NAME, 3, 5, name, name + '/')
+    comparison(image_address, ALGO_NAME, 3, 3, name, name + '/')
 
 
 def main_run_check():
-    image_address = "testPictures/" + random.choose(IMAGE_LIST)
+    image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " results single type" + str(random_num)
     comparison(image_address, [BETTER], 3, 10, name, name + '/')
@@ -45,7 +41,7 @@ def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name
     result_dictionary = dict()
     for solver_type in solver_type_list:
         for n in range(min_n, max_n + 1):
-            single_run(image_address, n, solver_type, result_dictionary,subfolder_name)
+            single_run(image_address, n, solver_type, result_dictionary, subfolder_name)
 
     # writing results
     picture_name = HF.address_to_name(image_address)
@@ -75,22 +71,25 @@ def single_run(image_address, n, solver_type, result_dictionary, subfolder_name)
     solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces - " + ALGO_NAME[solver_type])
     solver = Solver.Solver(square_puzzle, solver_type)
     result_dictionary[(n, solver_type)] = solver.get_results
-    scipy.misc.imsave(subfolder_name + solution_name + "jpg", solver.get_results[5])
+    Image.fromarray(solver.get_results()[4]).save(subfolder_name + solution_name, "jpg")
 
 
 def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
 
+print(HF.randomly_choose_file())
+# main_type_comparison()
+
 # run main
 # single_pic_sol(IMG_ADR, N)
 
 
-picture = create_square_puzzle(IMG_ADR, N)
-solver = Solver.Solver(picture, BRUTE_FORCE)
-if STEP_BY_STEP_DEBUG:
-    solver.single_solution((1, 1), 5)
-picture.picture_cost()
+# picture = create_square_puzzle(IMG_ADR, N)
+# solver = Solver.Solver(picture, BRUTE_FORCE)
+# if STEP_BY_STEP_DEBUG:
+#    solver.single_solution((1, 1), 5)
+# picture.picture_cost()
 # picture = create_square_puzzle(IMG_ADR, 5)
 # solver = Solver.Solver(picture)
 # picture = create_square_puzzle(IMG_ADR, 6)

@@ -1,7 +1,7 @@
 from PIL import Image
 import numpy as np
-# import scipy.misc
 import os
+import random
 
 from Constants import *
 import numpy as np
@@ -67,7 +67,13 @@ def address_to_name(address):
     :param address: a file address 
     :return: file name
     '''
-    return (os.path.splitext(address)[0])
+    return os.path.basename(address).split(".")[0]
+
+
+def randomly_choose_file(): #TODO make it work!!!
+    files = os.listdir("C:\Users\ t8373250\Documents\PuzzleSolver\ testPictures")
+    index = random.randint(0,len(files)-1)
+    return files[index]
 
 
 def swap_in_array(array, index1, index2):
