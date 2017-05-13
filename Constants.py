@@ -10,6 +10,7 @@ SUBFOLDER = "picture_data/"
 
 DEBUG = False#True
 STEP_BY_STEP_DEBUG = False#True
+SHOW_SOL = True
 IMAGE_LIST = ["etsi.jpg", "face.jpg"]
 # System variables - Should not be changed after done developing
 

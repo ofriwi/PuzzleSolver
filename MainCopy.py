@@ -58,6 +58,7 @@ def create_square_puzzle(image_address, n):
 
 picture = create_square_puzzle(IMG_ADR, N)
 solver = Solver.Solver(picture, BETTER)
+r = solver.get_results()
 if STEP_BY_STEP_DEBUG:
     solver.single_solution((1, 1), 5)
 picture.picture_cost()

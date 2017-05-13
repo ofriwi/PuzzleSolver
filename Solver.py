@@ -1,3 +1,5 @@
+import time
+
 import Board
 import HelpingFunction as HF
 import hungarian as Hungarian
@@ -23,18 +25,33 @@ class Solver:
         if not STEP_BY_STEP_DEBUG:
             self.results = self.solve()
 
+    def get_results(self):
+        return self.results
+
     # Solver
 
     def solve(self):
+        time_before = time.time()
         if self.solver_type == BETTER or self.solver_type == OLD_HUNGARIAN:
-            result = self.our_algorithm()
+            matches = self.our_algorithm()
         elif self.solver_type == BRUTE_FORCE:
-            result = self.brute_force_algorithm()
+            matches = self.brute_force_algorithm()
         elif self.solver_type == INTUITIVE:
-            result = self.intuitive_algorithm()
+            matches = self.intuitive_algorithm()
         else:
-            result = None
-        return result
+            matches = None
+
+        best_matches, costs = self.get_best_matches(matches, MATCH_NUM)
+        best_match = best_matches[0]
+        best_match_array = best_matches[0].get_solution_array()
+
+        time_after = time.time()
+        run_time = time_after - time_before
+
+        correctness = best_match.get_correctness()
+        is_correct = (correctness == 100)
+
+        return run_time, correctness, is_correct, costs[0], best_match_array
 
     def brute_force_algorithm(self):
         matches = {}
@@ -47,8 +64,7 @@ class Solver:
                     self.board.add_piece_index_in_position((k, l), indexes[0])
                     indexes.pop(0)
             matches[self.board.get_total_cost()] = self.board
-        self.get_best_matches(matches, MATCH_NUM)
-        return 0
+        return matches
 
     def intuitive_algorithm(self):
         matches = {}
@@ -75,8 +91,7 @@ class Solver:
                     self.board.add_piece_index_in_position((k, l), match_index)
                     last_cell = match_index
             matches[cost] = self.board
-        self.get_best_matches(matches, MATCH_NUM)
-        return 0
+        return matches
 
     def our_algorithm(self):
         '''
@@ -96,8 +111,7 @@ class Solver:
                     matches[cost] = board
                 print(str(l) + " checks out of " + str(self.board.m - 2*starting))
             print(str(k) + " large iter out of " + str(self.board.n - 2*starting))
-        self.get_best_matches(matches, MATCH_NUM)
-        return 0
+        return matches
 
     def get_best_matches(self, matches, number_of_values):
         '''
@@ -106,13 +120,15 @@ class Solver:
         :param number_of_values: 
         :return: best values as (cost, board)
         '''
-        best_matches = HF.best_k_values(matches, number_of_values)
-        for key in best_matches:
-            matches[key].show_solution()
-            matches[key].get_correctness()
+        costs = HF.best_k_values(matches, number_of_values)
+        best_matches = []
+        for key in costs:
+            best_matches.append(matches[key])
+            if SHOW_SOL:
+                matches[key].show_solution()
             if DEBUG:
                 print(key)
-        return best_matches
+        return best_matches, costs
 
     def single_solution(self, pos, piece_index):
         '''
