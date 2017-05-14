@@ -8,18 +8,19 @@ import random
 import os
 
 
-def main_type_comparison():
+def main_type_comparison(min_n=3, max_n=0):
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " type comparison " + str(random_num)
-    comparison(image_address, ALGO_INDEX, 3, 5, name, name + '/')
+    comparison(image_address, ALGO_INDEX, min_n, max_n, name, 'Results/' + name + '/')
 
 
-def main_run_check():
+def main_run_check(min_n=3, max_n=0):
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " single type " + str(random_num)
-    comparison(image_address, [BETTER], 3, 10, name, name)
+    print(name)
+    comparison(image_address, ALGO_INDEX, min_n, max_n, name, 'Results/' + name + '/')
 
 
 def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name='', subfolder_name=SUBFOLDER):
@@ -76,39 +77,14 @@ def single_run(image_address, n, solver_type, subfolder_name):
 def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
-
-# print(HF.randomly_choose_file())
-main_run_check()
-# run main
-# single_pic_sol(IMG_ADR, N)
-
-
-# picture = create_square_puzzle(IMG_ADR, N)
-# solver = Solver.Solver(picture, BRUTE_FORCE)
-# if STEP_BY_STEP_DEBUG:
-#    solver.single_solution((1, 1), 5)
-# picture.picture_cost()
-# picture = create_square_puzzle(IMG_ADR, 5)
-# solver = Solver.Solver(picture)
-# picture = create_square_puzzle(IMG_ADR, 6)
-# solver = Solver.Solver(picture)
-
-# print(solver.get_hungarian(0, [RIGHT, BOTTOM]))
-
-# Dist.get_distance_between_borders(board.pieces[0], board.pieces[1], 0)
-# print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[2].get_side(LEFT)))
-# print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[1].get_side(LEFT)))
-# print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[1].get_side(TOP)))
-# print(Dist.get_distance(board.pieces[0].get_side(RIGHT), board.pieces[2].get_side(TOP)))
-# board.show_image()
-# print(Dist.get_distance_matrix(picture.pieces))
-# for p in board.pieces:
-#   p.show()
-# board.print_image()
-# board.pieces[0].show()
-# board.board[0, 0] = board.pieces[1]
-# board.board[0, 1] = board.pieces[0]
-# board.board[1, 0] = board.pieces[0]
-# board.board[1, 1] = board.pieces[0]
-# board.print_solution()
-# board.get_solution()
+x = random.randint(0, 5)
+if x == 0:
+    main_run_check(3, 8)
+elif x == 1:
+    main_run_check(9, 9)
+elif x == 2:
+    main_type_comparison(3, 6)
+elif x == 3:
+    main_type_comparison(7, 8)
+else:
+    main_run_check(10, 10)

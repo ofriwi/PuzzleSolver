@@ -2,16 +2,17 @@ import math
 
 # Game variables - Change the functionallity of the game, should be changed
 
-IMG_ADR = "etsi.jpg"
-N = 4
+IMG_ADR = "LennaAllEffects.jpg"
+N = 10
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 3
 SUBFOLDER = "testPictures/"
 
 DEBUG = False  # True
 STEP_BY_STEP_DEBUG = False  # True
-SHOW_SOL = True
-IMAGE_LIST = ["etsi.jpg", "face.jpg"]
+SHOW_SOL = False  # True
+
+
 # System variables - Should not be changed after done developing
 
 INF = 2147483647  # float('inf') - 1
@@ -30,8 +31,8 @@ ALL_DIRECTIONS = [TOP, LEFT, RIGHT, BOTTOM]
 # Algorithms
 BETTER = 0
 OLD_HUNGARIAN = 1
-BRUTE_FORCE = 2
-INTUITIVE = 3
+INTUITIVE = 2
+BRUTE_FORCE = 3
 ALGO_INDEX = [BETTER, OLD_HUNGARIAN, INTUITIVE]
 ALGO_NAME = ['BETTER', 'old hungarian', 'greedy']
 
