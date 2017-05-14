@@ -70,9 +70,11 @@ def address_to_name(address):
     return os.path.basename(address).split(".")[0]
 
 
-def randomly_choose_file(): #TODO make it work!!!
-    files = os.listdir("C:\Users\ t8373250\Documents\PuzzleSolver\ testPictures")
-    index = random.randint(0,len(files)-1)
+def randomly_choose_file():  # TODO make it work!!!
+    files = os.listdir("testPictures")
+    index = random.randint(0, len(files) - 1)
+    while files[index].split(".")[1] != "jpg":
+        index = random.randint(0, len(files) - 1)
     return files[index]
 
 

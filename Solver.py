@@ -51,7 +51,8 @@ class Solver:
         correctness = best_match.get_correctness()
         is_correct = (correctness == 100)
 
-        return run_time, correctness, is_correct, costs[0], best_match_array
+        result_tuple = run_time, correctness, is_correct, costs[0], best_match_array
+        return result_tuple
 
     def brute_force_algorithm(self):
         matches = {}
@@ -109,8 +110,8 @@ class Solver:
                 for index in range(self.board.n * self.board.m):
                     (cost, board) = self.single_solution((k, l), index)
                     matches[cost] = board
-                print(str(l) + " checks out of " + str(self.board.m - 2*starting))
-            print(str(k) + " large iter out of " + str(self.board.n - 2*starting))
+                print(str(l) + " checks out of " + str(self.board.m - 2 * starting))
+            print(str(k) + " large iter out of " + str(self.board.n - 2 * starting))
         return matches
 
     def get_best_matches(self, matches, number_of_values):
@@ -164,7 +165,7 @@ class Solver:
         empty_directions = self.board.get_empty_directions_around(pos)
         if self.solver_type == BETTER:
             assign, cost = self.better_hungarian(piece_index, empty_directions,
-                                             pos)
+                                                 pos)
         else:
             assign, cost = self.get_hungarian(piece_index, empty_directions)
         self.current_cost += cost
@@ -259,9 +260,9 @@ class Solver:
                 other_piece = self.board.get_piece_index_in_position(
                     other_piece_pos)
                 row_around = D[
-                    other_piece, 0:len(self.board.get_unassigned_cells())
+                             other_piece, 0:len(self.board.get_unassigned_cells())
                 ,
-                             INVERSE-direction]
+                             INVERSE - direction]
                 avg += row_around
                 counter += 1
         avg = avg / counter

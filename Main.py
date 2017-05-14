@@ -5,22 +5,21 @@ import Solver
 from Constants import *
 import Picture
 import random
+import os
 
-
-# TODO choose file randomly
 
 def main_type_comparison():
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
-    name = HF.address_to_name(image_address) + " results type comparison" + str(random_num)
-    comparison(image_address, ALGO_NAME, 3, 3, name, name + '/')
+    name = HF.address_to_name(image_address) + " type comparison " + str(random_num)
+    comparison(image_address, ALGO_INDEX, 3, 5, name, name + '/')
 
 
 def main_run_check():
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
-    name = HF.address_to_name(image_address) + " results single type" + str(random_num)
-    comparison(image_address, [BETTER], 3, 10, name, name + '/')
+    name = HF.address_to_name(image_address) + " single type " + str(random_num)
+    comparison(image_address, [BETTER], 3, 10, name, name)
 
 
 def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name='', subfolder_name=SUBFOLDER):
@@ -36,51 +35,50 @@ def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name
     parameter (running time, cost, etc...)
     solver_type: result
     '''
-    if max_n == 0:  # only once
-        max_n = min_n
-    result_dictionary = dict()
-    for solver_type in solver_type_list:
-        for n in range(min_n, max_n + 1):
-            single_run(image_address, n, solver_type, result_dictionary, subfolder_name)
-
-    # writing results
+    # creation of file and directory
     picture_name = HF.address_to_name(image_address)
     if result_file_name == "":
-        reuslt_file_name = picture_name
-    result_file = open(subfolder_name + result_file_name, "w")
-    result_file.write(picture_name + " - " + ALGO_NAME[solver_type] + "\n")
+        result_file_name = picture_name
+    if not os.path.exists(subfolder_name):
+        os.makedirs(subfolder_name)
+    result_file = open(subfolder_name + "/" + result_file_name, "w")
+
+    # run
+    if max_n == 0:  # only once
+        max_n = min_n
     for n in range(min_n, max_n + 1):
-        result_file.write("Piece Number: %X%" % n % n)
-        for result_param in TUPLE_RESULT_INDEXES:
-            result_file.write(PARAMETER_NAME[result_param] + "\n")
-            for solver_type in solver_type_list:
-                result_file.write(ALGO_NAME[solver_type] + ": " + result_dictionary(n, solver_type)[n] + "\n")
-            result_file.write("\n")  # break for new parameter
-        result_file.write("\n\n\n")  # break for new puzzle
+        result_file.write("Piece Number: " + str(n) + "X" + str(n) + "\n")
+        for solver_type in solver_type_list:
+            result_file.write(ALGO_NAME[solver_type] + ":\n")
+            results = single_run(image_address, n, solver_type, subfolder_name)
+            for result_param in TUPLE_RESULT_INDEXES:
+                result_file.write(PARAMETER_NAME[result_param] + ": " + str(results[result_param]) + "\n")
+            result_file.write("\n")
+        result_file.write("\n\n")
+    result_file.close()
 
 
-def single_run(image_address, n, solver_type, result_dictionary, subfolder_name):
+def single_run(image_address, n, solver_type, subfolder_name):
     '''
     :param image_address: address of desired image 
     :param n: n^2 is the number of puzzle pieces to be cut
-    :param result_dictionary: dictionary for results to be kept in
+    :param solver_type: type of solver to be used
     :param subfolder_name: name of folder for results to be kept in
     '''
     square_puzzle = Picture.Picture(image_address, n, n)
     picture_name = HF.address_to_name(image_address)
     solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces - " + ALGO_NAME[solver_type])
     solver = Solver.Solver(square_puzzle, solver_type)
-    result_dictionary[(n, solver_type)] = solver.get_results
-    Image.fromarray(solver.get_results()[4]).save(subfolder_name + solution_name, "jpg")
+    Image.fromarray(solver.get_results()[4]).save(subfolder_name + solution_name + ".jpeg", "jpeg")
+    return solver.get_results()
 
 
 def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
 
-print(HF.randomly_choose_file())
-# main_type_comparison()
-
+# print(HF.randomly_choose_file())
+main_run_check()
 # run main
 # single_pic_sol(IMG_ADR, N)
 

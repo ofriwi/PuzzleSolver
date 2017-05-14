@@ -6,7 +6,7 @@ IMG_ADR = "etsi.jpg"
 N = 4
 LENGTH_CHECK_PRECENTAGE = 10
 MATCH_NUM = 3
-SUBFOLDER = "picture_data/"
+SUBFOLDER = "testPictures/"
 
 DEBUG = False  # True
 STEP_BY_STEP_DEBUG = False  # True
@@ -32,7 +32,8 @@ BETTER = 0
 OLD_HUNGARIAN = 1
 BRUTE_FORCE = 2
 INTUITIVE = 3
-ALGO_NAME = ['BETTER', 'old hungarian', 'brute force', 'greedy']
+ALGO_INDEX = [BETTER, OLD_HUNGARIAN, INTUITIVE]
+ALGO_NAME = ['BETTER', 'old hungarian', 'greedy']
 
 # Results
 RUNNING_TIME = 0
@@ -41,8 +42,5 @@ IS_CORRECT = 2
 COST = 3
 SOLUTION = 4
 
-TUPLE_RESULT_INDEXES = [RUNNING_TIME, CORRECT_BORDERS, IS_CORRECT, COST, SOLUTION]
+TUPLE_RESULT_INDEXES = [RUNNING_TIME, CORRECT_BORDERS, IS_CORRECT, COST]
 PARAMETER_NAME = ["Running Time", "Correct Borders", "Is Correct", "Cost"]
-
-# Images
-IMAGE_LIST = ["Lenna", "LennaAllEffectss"]
