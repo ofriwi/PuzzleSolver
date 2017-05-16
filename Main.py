@@ -18,9 +18,9 @@ def main_type_comparison(min_n=3, max_n=0):
 def main_run_check(min_n=3, max_n=0):
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
-    name = HF.address_to_name(image_address) + " single type " + str(random_num)
+    name = HF.address_to_name(image_address) + " 10 single type " + str(random_num)
     print(name)
-    comparison(image_address, ALGO_INDEX, min_n, max_n, name, 'Results/' + name + '/')
+    comparison(image_address, [BETTER], min_n, max_n, name, 'Results/' + name + '/')
 
 
 def comparison(image_address, solver_type_list, min_n, max_n=0, result_file_name='', subfolder_name=SUBFOLDER):
@@ -77,14 +77,9 @@ def single_run(image_address, n, solver_type, subfolder_name):
 def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
-x = random.randint(0, 5)
-if x == 0:
-    main_run_check(3, 8)
-elif x == 1:
-    main_run_check(9, 9)
-elif x == 2:
-    main_type_comparison(3, 6)
-elif x == 3:
-    main_type_comparison(7, 8)
-else:
-    main_run_check(10, 10)
+
+# ame = HF.address_to_name("Lenna.jpg") + "BETTER"
+# comparison("Lenna.jpg", [BETTER], 10, 10, name, 'Results/' + name + '/')
+
+main_run_check(8, 8)
+main_run_check(9, 9)

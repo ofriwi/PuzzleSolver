@@ -34,7 +34,7 @@ OLD_HUNGARIAN = 1
 INTUITIVE = 2
 BRUTE_FORCE = 3
 ALGO_INDEX = [BETTER, OLD_HUNGARIAN, INTUITIVE]
-ALGO_NAME = ['BETTER', 'old hungarian', 'greedy']
+ALGO_NAME = ['BETTER', 'old hungarian', 'greedy', 'brute force']
 
 # Results
 RUNNING_TIME = 0
