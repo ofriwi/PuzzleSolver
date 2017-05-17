@@ -12,7 +12,15 @@ def main_type_comparison(min_n=3, max_n=0):
     image_address = HF.randomly_choose_file()
     random_num = random.randint(1000, 9999)  # random number for file name
     name = HF.address_to_name(image_address) + " type comparison " + str(random_num)
+    print(name)
     comparison(image_address, ALGO_INDEX, min_n, max_n, name, 'Results/' + name + '/')
+
+
+def main_type_comparison_image(image_address, algos, min_n=3, max_n=0):
+    random_num = random.randint(1000, 9999)  # random number for file name
+    name = HF.address_to_name(image_address) + " type comparison " + str(random_num)
+    print(name)
+    comparison(image_address, algos, min_n, max_n, name, 'Results/' + name + '/')
 
 
 def main_run_check(min_n=3, max_n=0):
@@ -70,16 +78,21 @@ def single_run(image_address, n, solver_type, subfolder_name):
     picture_name = HF.address_to_name(image_address)
     solution_name = (picture_name + " - " + str(n) + "X" + str(n) + " pieces - " + ALGO_NAME[solver_type])
     solver = Solver.Solver(square_puzzle, solver_type)
-    Image.fromarray(solver.get_results()[4]).save(subfolder_name + solution_name + ".jpeg", "jpeg")
-    return solver.get_results()
+    if STEP_BY_STEP_DEBUG:
+        solver.single_solution((K_STEP, L_STEP), PIECE_INDEX_STEP)
+        return None
+    else:
+        Image.fromarray(solver.get_results()[4]).save(subfolder_name + solution_name + ".jpeg", "jpeg")
+        return solver.get_results()
 
 
 def create_square_puzzle(image_address, n):
     return Picture.Picture(image_address, n, n)
 
 
-# ame = HF.address_to_name("Lenna.jpg") + "BETTER"
-# comparison("Lenna.jpg", [BETTER], 10, 10, name, 'Results/' + name + '/')
+#main_type_comparison_image('While.jpg', [0], 9, 9)
 
-main_run_check(8, 8)
-main_run_check(9, 9)
+main_type_comparison_image('MonetLilies.jpg', [5], 5, 10)
+# main_type_comparison_image('Jungle.jpg', [1], 7, 8)
+#main_type_comparison_image('Sefi.jpg', [5], 3, 3)
+#main_type_comparison_image('Sefi.jpg', [5], 4, 4)

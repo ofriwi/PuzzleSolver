@@ -1,0 +1,21 @@
+Piece Number: 10X10
+BETTER:
+Running Time: 23152.84600019455
+Correct Borders: 97
+Is Correct: False
+Cost: 90233.5
+
+old hungarian:
+Running Time: 43967.1197040081
+Correct Borders: 5
+Is Correct: False
+Cost: 1292379.0
+
+greedy:
+Running Time: 0.19900012016296387
+Correct Borders: 94
+Is Correct: False
+Cost: 199593.0
+
+
+

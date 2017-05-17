@@ -9,9 +9,16 @@ MATCH_NUM = 3
 SUBFOLDER = "testPictures/"
 
 DEBUG = False  # True
-STEP_BY_STEP_DEBUG = False  # True
-SHOW_SOL = False  # True
 
+#STEP_BY_STEP_DEBUG = True
+#K_STEP = 3
+#L_STEP = 3
+#PIECE_INDEX_STEP = 30
+#SLEEP = 0  # positive time, 0 for no sleep, -1 for input()
+STEP_BY_STEP_DEBUG = False
+
+# SHOW_SOL = True
+SHOW_SOL = False
 
 # System variables - Should not be changed after done developing
 
@@ -33,8 +40,10 @@ BETTER = 0
 OLD_HUNGARIAN = 1
 INTUITIVE = 2
 BRUTE_FORCE = 3
+OUR_FROM_MIDDLE = 4
+GREEDY2 = 5
 ALGO_INDEX = [BETTER, OLD_HUNGARIAN, INTUITIVE]
-ALGO_NAME = ['BETTER', 'old hungarian', 'greedy', 'brute force']
+ALGO_NAME = ['BETTER', 'old hungarian', 'greedy', 'brute force', 'our from middle', 'greedy2']
 
 # Results
 RUNNING_TIME = 0

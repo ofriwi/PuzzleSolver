@@ -32,7 +32,7 @@ class Solver:
 
     def solve(self):
         time_before = time.time()
-        if self.solver_type == BETTER or self.solver_type == OLD_HUNGARIAN:
+        if self.solver_type == BETTER or self.solver_type == OLD_HUNGARIAN or self.solver_type == GREEDY2:
             matches = self.our_algorithm()
         elif self.solver_type == BRUTE_FORCE:
             matches = self.brute_force_algorithm()
@@ -166,8 +166,23 @@ class Solver:
         if self.solver_type == BETTER:
             assign, cost = self.better_hungarian(piece_index, empty_directions,
                                                  pos)
-        else:
+        elif self.solver_type == OLD_HUNGARIAN:
             assign, cost = self.get_hungarian(piece_index, empty_directions)
+        elif self.solver_type == GREEDY2:
+            assigns = []
+            costs = []
+            for direction in empty_directions:
+                assigns.append(np.argmin(self.board.get_distance_matrix()[piece_index, self.board.get_unassigned_cells(), direction]))
+                ix = empty_directions.index(direction)
+                assigns[ix] = self.board.get_unassigned_cells()[assigns[ix]]
+                costs.append(self.board.get_distance_matrix()[piece_index, assigns[ix], direction])
+
+            cost = min(costs)
+            index = costs.index(cost)
+            assign = [(assigns[index], empty_directions[index])]
+        else:
+            assign = 0
+            cost = 0
         self.current_cost += cost
 
         # Lines 10 - 11
@@ -177,6 +192,10 @@ class Solver:
 
         if STEP_BY_STEP_DEBUG:
             self.board.show_solution()
+            if SLEEP == -1:
+                input()
+            elif not SLEEP == 0:
+                time.sleep(SLEEP)
 
         if not self.board.is_puzzle_completed():
             next_pos = self.get_next_position_to_match(pos)
