@@ -1,0 +1,54 @@
+Piece Number: 5X5
+greedy2:
+Running Time: 0.608396053314209
+Correct Borders: 45
+Is Correct: False
+Cost: 91435.0
+
+
+
+Piece Number: 6X6
+greedy2:
+Running Time: 2.4454848766326904
+Correct Borders: 30
+Is Correct: False
+Cost: 115227.0
+
+
+
+Piece Number: 7X7
+greedy2:
+Running Time: 6.862757205963135
+Correct Borders: 28
+Is Correct: False
+Cost: 135833.0
+
+
+
+Piece Number: 8X8
+greedy2:
+Running Time: 16.865792989730835
+Correct Borders: 27
+Is Correct: False
+Cost: 159351.0
+
+
+
+Piece Number: 9X9
+greedy2:
+Running Time: 39.1604528427124
+Correct Borders: 26
+Is Correct: False
+Cost: 169883.0
+
+
+
+Piece Number: 10X10
+greedy2:
+Running Time: 78.93109607696533
+Correct Borders: 22
+Is Correct: False
+Cost: 196329.0
+
+
+
